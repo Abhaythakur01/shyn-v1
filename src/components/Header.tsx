@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
-  BookOpen, 
-  Compass, 
-  Users, 
-  GraduationCap, 
-  User, 
-  LogIn, 
-  UserPlus,
   LogOut,
-  Palette
+  Menu,
+  X
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import AuthModal from './AuthModal';
@@ -18,6 +12,7 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, signOut } = useAuth();
   const location = useLocation();
 
@@ -40,104 +35,248 @@ const Header: React.FC = () => {
   };
 
   const navItems = [
-    { name: 'Blogs', icon: BookOpen, path: '/blogs' },
-    { name: 'Who Are You?', icon: Compass, path: '/who-are-you' },
-    { name: 'SHYN with Us', icon: Users, path: '/membership' },
-    { name: 'SHYN with Experts', icon: GraduationCap, path: '/experts' },
+    { name: 'Blogs', path: '/blogs' },
+    { name: 'Who Are You?', path: '/who-are-you' },
+    { name: 'SHYN with Us', path: '/membership' },
+    { name: 'SHYN with Experts', path: '/experts' },
   ];
 
-  // Add Portfolio for logged-in users
   if (user) {
-    navItems.push({ name: 'Portfolio', icon: Palette, path: '/portfolio' });
+    navItems.push({ name: 'Portfolio', path: '/portfolio' });
   }
 
   return (
     <>
-      <header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100' 
-            : 'bg-transparent'
-        }`}
-      >
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link 
-              to="/" 
-              className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent hover:scale-105 transition-transform duration-200"
-            >
-              SHYN
-            </Link>
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center">
+        {/* The nav-wrapper class is added here to enable the glowing border style */}
+        <nav 
+          className={`
+            nav-wrapper 
+            mt-4 max-w-7xl
+            bg-black/15 backdrop-blur-xl
+            px-8 py-5
+            transition-all duration-500 ease-in-out 
+            ${isScrolled 
+              ? 'shadow-2xl bg-black/25 backdrop-blur-2xl' 
+              : 'shadow-xl'
+            }
+          `}
+          style={{
+            borderRadius: '40px',
+            boxShadow: isScrolled 
+              ? '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)' 
+              : '0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.08)',
+            marginLeft: '2rem',
+            marginRight: '2rem',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            // The border style is removed from here and will be handled by CSS
+          }}
+        >
+          <div className="flex items-center justify-between">
+            {/* Logo - Left Section */}
+            <div className="flex items-center" style={{ paddingLeft: '24px' }}>
+              <Link 
+                to="/" 
+                className="text-xl font-semibold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent hover:scale-105 transition-all duration-300 ease-in-out"
+                style={{ 
+                  fontSize: '22px', 
+                  fontWeight: '700',
+                  borderRadius: '20px',
+                  padding: '10px 16px'
+                }}
+              >
+                SHYN
+              </Link>
+            </div>
 
-            {/* Navigation Links */}
-            <div className="hidden md:flex space-x-8">
+            {/* Navigation Items - Center Section */}
+            <div className="hidden lg:flex items-center" style={{ gap: '36px' }}>
               {navItems.map((item) => {
-                const Icon = item.icon;
                 const isActive = location.pathname === item.path;
                 
                 return (
                   <Link
                     key={item.name}
                     to={item.path}
-                    className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:bg-gray-100 ${
-                      isActive 
-                        ? 'text-purple-600 bg-purple-50' 
-                        : isScrolled 
-                          ? 'text-gray-700 hover:text-purple-600' 
-                          : 'text-white hover:text-purple-200'
-                    }`}
+                    className={`
+                      text-white hover:opacity-90 hover:bg-white/10 transition-all duration-300 ease-in-out
+                      ${isActive 
+                        ? 'font-bold text-purple-300 bg-purple-500/20 shadow-lg' 
+                        : 'font-medium hover:text-purple-200'
+                      }
+                    `}
+                    style={{ 
+                      fontSize: '16px', 
+                      fontWeight: isActive ? '700' : '500',
+                      padding: '12px 20px',
+                      borderRadius: '25px',
+                      borderBottom: isActive ? '2px solid #a855f7' : 'none',
+                      backdropFilter: isActive ? 'blur(10px)' : 'none'
+                    }}
                   >
-                    <Icon size={16} />
-                    <span>{item.name}</span>
+                    {item.name}
                   </Link>
                 );
               })}
             </div>
 
-            {/* Auth Buttons */}
-            <div className="flex items-center space-x-4">
+            {/* Authentication - Right Section */}
+            <div className="hidden lg:flex items-center" style={{ gap: '20px' }}>
               {user ? (
-                <div className="flex items-center space-x-4">
-                  <span className={`text-sm font-medium ${isScrolled ? 'text-gray-700' : 'text-white'}`}>
+                <div className="flex items-center" style={{ gap: '20px' }}>
+                  <span 
+                    className="text-sm font-medium text-white bg-white/10 transition-all duration-300 ease-in-out backdrop-blur-sm"
+                    style={{
+                      padding: '10px 16px',
+                      borderRadius: '20px',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}
+                  >
                     Welcome, {user.email?.split('@')[0]}
                   </span>
                   <button
                     onClick={handleSignOut}
-                    className="flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium text-red-600 hover:bg-red-50 transition-all duration-200"
+                    className="flex items-center space-x-2 text-red-300 hover:text-red-200 hover:bg-red-500/20 transition-all duration-300 ease-in-out font-medium backdrop-blur-sm"
+                    style={{ 
+                      fontSize: '14px', 
+                      fontWeight: '500',
+                      padding: '10px 16px',
+                      borderRadius: '20px',
+                      border: '1px solid rgba(239, 68, 68, 0.2)'
+                    }}
                   >
                     <LogOut size={16} />
-                    <span>Sign Out</span>
+                    <span>Logout</span>
                   </button>
                 </div>
               ) : (
                 <>
                   <button
                     onClick={() => handleAuthClick('login')}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                      isScrolled
-                        ? 'text-gray-700 hover:bg-gray-100'
-                        : 'text-white hover:bg-white/20'
-                    }`}
+                    className="text-white hover:text-purple-200 hover:bg-white/10 transition-all duration-300 ease-in-out font-medium backdrop-blur-sm"
+                    style={{ 
+                      fontSize: '16px', 
+                      fontWeight: '500',
+                      padding: '12px 20px',
+                      borderRadius: '25px',
+                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}
                   >
-                    <LogIn size={16} />
-                    <span>Login</span>
+                    Login
                   </button>
                   <button
                     onClick={() => handleAuthClick('signup')}
-                    className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full text-sm font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:scale-105 hover:from-purple-500 hover:to-pink-500 hover:shadow-2xl transition-all duration-300 ease-in-out font-semibold backdrop-blur-sm"
+                    style={{ 
+                      padding: '14px 28px',
+                      fontSize: '15px',
+                      fontWeight: '600',
+                      borderRadius: '25px',
+                      boxShadow: '0 4px 15px rgba(147, 51, 234, 0.4)'
+                    }}
                   >
-                    <UserPlus size={16} />
-                    <span>Sign Up</span>
+                    Get Started
                   </button>
                 </>
               )}
             </div>
+
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-3 text-white hover:opacity-80 hover:bg-white/10 transition-all duration-300 ease-in-out"
+                style={{ borderRadius: '20px' }}
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
+
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div 
+              className="lg:hidden mt-6 pt-6 border-t border-white/20 bg-black/30 backdrop-blur-xl transition-all duration-300 ease-in-out"
+              style={{
+                borderRadius: '25px',
+                margin: '24px -32px -20px -32px',
+                padding: '20px 32px',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)'
+              }}
+            >
+              <div className="flex flex-col space-y-4">
+                {navItems.map((item) => {
+                  const isActive = location.pathname === item.path;
+                  
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`
+                        text-white hover:opacity-90 hover:bg-white/10 transition-all duration-300 ease-in-out
+                        ${isActive 
+                          ? 'font-bold text-purple-300 bg-purple-500/20' 
+                          : 'font-medium'
+                        }
+                      `}
+                      style={{ 
+                        fontSize: '16px', 
+                        fontWeight: isActive ? '700' : '500',
+                        padding: '14px 20px',
+                        borderRadius: '20px'
+                      }}
+                    >
+                      {item.name}
+                    </Link>
+                  );
+                })}
+                
+                <div 
+                  className="pt-4 border-t border-white/20 flex flex-col space-y-4"
+                  style={{ marginTop: '20px', paddingTop: '20px' }}
+                >
+                  {user ? (
+                    <button
+                      onClick={handleSignOut}
+                      className="flex items-center space-x-2 text-red-300 hover:text-red-200 hover:bg-red-500/20 transition-all duration-300 ease-in-out font-medium"
+                      style={{ 
+                        fontSize: '14px', 
+                        fontWeight: '500',
+                        padding: '14px 20px',
+                        borderRadius: '20px'
+                      }}
+                    >
+                      <LogOut size={16} />
+                      <span>Logout</span>
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => { handleAuthClick('login'); setIsMobileMenuOpen(false); }}
+                        className="text-white hover:opacity-90 hover:bg-white/10 transition-all duration-300 ease-in-out font-medium text-left"
+                        style={{ fontSize: '16px', fontWeight: '500', padding: '14px 20px', borderRadius: '20px' }}
+                      >
+                        Login
+                      </button>
+                      <button
+                        onClick={() => { handleAuthClick('signup'); setIsMobileMenuOpen(false); }}
+                        className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:scale-105 hover:from-purple-500 hover:to-pink-500 hover:shadow-xl transition-all duration-300 ease-in-out font-semibold text-center"
+                        style={{ padding: '14px 28px', fontSize: '15px', fontWeight: '600', borderRadius: '20px' }}
+                      >
+                        Get Started
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </nav>
       </header>
 
-      {/* Auth Modal */}
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}

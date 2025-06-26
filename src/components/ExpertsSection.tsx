@@ -12,19 +12,44 @@ const ExpertsSection: React.FC = () => {
       <Star 
         key={i} 
         size={16} 
-        className={i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'} 
+        className={i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-500'} 
       />
     ));
   };
 
   return (
-    <section id="experts" ref={sectionRef} className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            SHYN with <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Experts</span>
+    <section id="experts" ref={sectionRef} className="py-24 bg-gray-900 relative overflow-hidden">
+      {/* Seamless gradient transition */}
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-gray-900 to-transparent pointer-events-none"></div>
+      
+      {/* Sophisticated Grid Background */}
+      <div className="absolute inset-0 opacity-16">
+        <div 
+          className="w-full h-full"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(168, 85, 247, 0.14) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(168, 85, 247, 0.14) 1px, transparent 1px),
+              linear-gradient(rgba(236, 72, 153, 0.10) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(236, 72, 153, 0.10) 1px, transparent 1px)
+            `,
+            backgroundSize: '20px 20px, 20px 20px, 60px 60px, 60px 60px',
+            backgroundPosition: '0 0, 0 0, 10px 10px, 10px 10px'
+          }}
+        ></div>
+      </div>
+
+      {/* Multi-layered Theme Color Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-indigo-900/20 to-pink-900/25 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-tl from-violet-800/20 via-transparent to-fuchsia-800/20 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-900/10 to-transparent pointer-events-none"></div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
+            SHYN with <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Experts</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             Learn from world-class artists and master teachers who will guide you on your creative journey
           </p>
         </div>
@@ -33,40 +58,40 @@ const ExpertsSection: React.FC = () => {
           {experts.map((expert) => (
             <div 
               key={expert.id}
-              className="expert-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group cursor-pointer"
+              className="expert-card bg-gray-800/90 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 group cursor-pointer border border-gray-700/50 hover:border-purple-500/30"
             >
-              <div className="relative overflow-hidden rounded-t-2xl">
+              <div className="relative overflow-hidden rounded-t-3xl">
                 <img 
                   src={expert.image} 
                   alt={expert.name}
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
               
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
+              <div className="p-8">
+                <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-1">
                     {renderStars(expert.rating)}
                   </div>
-                  <span className="text-sm font-semibold text-gray-700">{expert.rating}</span>
+                  <span className="text-sm font-bold text-gray-300 bg-gray-700/50 px-3 py-1 rounded-full">{expert.rating}</span>
                 </div>
                 
-                <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors duration-200">
+                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors duration-300">
                   {expert.name}
                 </h3>
                 
-                <div className="flex items-center space-x-2 mb-3">
-                  <Award size={16} className="text-purple-600" />
-                  <span className="text-sm font-medium text-purple-600">{expert.specialty}</span>
+                <div className="flex items-center space-x-2 mb-4">
+                  <Award size={16} className="text-purple-400" />
+                  <span className="text-sm font-semibold text-purple-400 bg-purple-500/10 px-3 py-1 rounded-full">{expert.specialty}</span>
                 </div>
                 
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                <p className="text-gray-300 text-sm mb-5 line-clamp-3 leading-relaxed">
                   {expert.bio}
                 </p>
                 
-                <div className="flex items-center text-sm text-gray-500">
-                  <Clock size={14} className="mr-1" />
+                <div className="flex items-center text-sm text-gray-400 bg-gray-700/30 px-3 py-2 rounded-full">
+                  <Clock size={14} className="mr-2" />
                   <span>{expert.experience}</span>
                 </div>
               </div>
@@ -74,8 +99,8 @@ const ExpertsSection: React.FC = () => {
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <button className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+        <div className="text-center mt-16">
+          <button className="px-10 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105">
             View All Experts
           </button>
         </div>

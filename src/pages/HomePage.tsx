@@ -1,7 +1,7 @@
 import React from 'react';
 import Hero from '../components/Hero';
-import BlogsSection from '../components/BlogsSection';
-import WhoAreYouSection from '../components/WhoAreYouSection';
+import HorizontalScrollSection from '../components/HorizontalScrollSection';
+import ThreeDScrollSection from '../components/ThreeDScrollSection';
 import MembershipSection from '../components/MembershipSection';
 import ExpertsSection from '../components/ExpertsSection';
 import Footer from '../components/Footer';
@@ -10,8 +10,8 @@ const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen">
       <Hero />
-      <BlogsSection />
-      <WhoAreYouSection />
+      <HorizontalScrollSection />
+      <ThreeDScrollSection />
       <MembershipSection />
       <ExpertsSection />
       <Footer />
