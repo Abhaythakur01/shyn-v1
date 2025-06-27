@@ -55,7 +55,7 @@ const HorizontalScrollSection: React.FC = () => {
                 <section className="panel panel-discover">
                     <div className="panel-content">
                         <div className="text-content animate-content">
-                            <h2 className="text-6xl font-bold mb-4">Discover Your Art Form</h2>
+                            <h2 className="text-6xl font-bold mb-4">Get your video recorded</h2>
                             <p className="text-xl max-w-2xl mb-8">Not sure where to start? Explore a universe of creativity and find the path that speaks to you.</p>
                             <button className="cta-button">
                                 <span>Explore Now</span>

@@ -32,6 +32,7 @@ const Hero: React.FC = () => {
 
   return (
     <div 
+      id="hero-section" // ID added to target with IntersectionObserver
       ref={heroRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ backgroundColor: '#0c001f' }} // Set a base background color

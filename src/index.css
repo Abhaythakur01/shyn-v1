@@ -676,3 +676,63 @@ Interactive 'Who Are You' Section V2
     opacity: 0; /* Still start as invisible for fade-in */
   }
 }
+
+/*
+==============================================
+Thematic Mouse Trail (Canvas Version)
+==============================================
+*/
+.mouse-trail-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+}
+
+/* Class to hide the trail when over the hero section */
+body.hero-trail-hidden .mouse-trail-canvas {
+  opacity: 0;
+}
+
+/*
+==============================================
+Custom Circular Cursor
+==============================================
+*/
+#custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #c084fc; /* A purple color from your site's theme */
+  border-radius: 50%;
+  background-color: transparent;
+  pointer-events: none;
+  z-index: 9999; /* Highest z-index to be on top of everything */
+  transform: translate(-50%, -50%); /* Center the cursor on the mouse position */
+}
+
+/*
+==============================================
+Global Styles & Cursor Reset
+==============================================
+*/
+body {
+  background-color: #0c001f;
+  /* Hide the default system cursor to show only our custom effects */
+  cursor: none;
+}
+
+/* Ensure interactive elements don't show the default pointer */
+a, button, input, [role="button"] {
+  cursor: none;
+}
+
+/* Import custom scrollbar styles */
+@import './styles/scrollbar.css';

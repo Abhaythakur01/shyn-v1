@@ -100,6 +100,9 @@ const Fluid: React.FC = () => {
             program: WebGLProgram;
             
             constructor(vertexShader: WebGLShader, fragmentShader: WebGLShader) {
+                if (!gl) {
+                    throw new Error("WebGL context is not available.");
+                }
                 this.uniforms = {};
                 this.program = gl.createProgram()!;
                 gl.attachShader(this.program, vertexShader);
@@ -114,11 +117,17 @@ const Fluid: React.FC = () => {
                 }
             }
             bind() {
+                if (!gl) {
+                    throw new Error("WebGL context is not available.");
+                }
                 gl.useProgram(this.program);
             }
         }
 
         function compileShader(type: number, source: string) {
+            if (!gl) {
+                throw new Error("WebGL context is not available.");
+            }
             const shader = gl.createShader(type)!;
             gl.shaderSource(shader, source);
             gl.compileShader(shader);
@@ -319,6 +328,7 @@ const Fluid: React.FC = () => {
         const gradienSubtractProgram = new GLProgram(baseVertexShader, gradientSubtractShader);
 
         function initFramebuffers() {
+            if (!gl) return;
             textureWidth = gl.drawingBufferWidth >> config.TEXTURE_DOWNSAMPLE;
             textureHeight = gl.drawingBufferHeight >> config.TEXTURE_DOWNSAMPLE;
             const texType = ext.halfFloatTexType;
@@ -333,6 +343,7 @@ const Fluid: React.FC = () => {
         }
 
         function createFBO(texId: number, w: number, h: number, internalFormat: any, format: any, type: any, param: any) {
+            if (!gl) throw new Error("WebGL context is not available.");
             gl.activeTexture(gl.TEXTURE0 + texId);
             let texture = gl.createTexture();
             gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -383,6 +394,7 @@ const Fluid: React.FC = () => {
             const dt = Math.min((Date.now() - lastTime) / 1000, 0.0166);
             lastTime = Date.now();
 
+            if (!gl) return;
             gl.viewport(0, 0, textureWidth, textureHeight);
 
             if (splatStack.length > 0)
@@ -412,6 +424,7 @@ const Fluid: React.FC = () => {
             }
 
             curlProgram.bind();
+            if (!gl) return;
             gl.uniform2f(curlProgram.uniforms.texelSize, 1.0 / textureWidth, 1.0 / textureHeight);
             gl.uniform1i(curlProgram.uniforms.uVelocity, velocity.read[2]);
             blit(curl[1]);
@@ -461,8 +474,10 @@ const Fluid: React.FC = () => {
         }
 
         function splat(x: number, y: number, dx: number, dy: number, color: number[]) {
+            if (!gl) return;
             splatProgram.bind();
             gl.uniform1i(splatProgram.uniforms.uTarget, velocity.read[2]);
+            if (!canvas) return;
             gl.uniform1f(splatProgram.uniforms.aspectRatio, canvas.width / canvas.height);
             gl.uniform2f(splatProgram.uniforms.point, x / canvas.width, 1.0 - y / canvas.height);
             gl.uniform3f(splatProgram.uniforms.color, dx, -dy, 1.0);
@@ -477,6 +492,7 @@ const Fluid: React.FC = () => {
         }
 
         function multipleSplats(amount: number) {
+            if (!canvas) return;
             for (let i = 0; i < amount; i++) {
                 const color = [Math.random() * 10, Math.random() * 10, Math.random() * 10];
                 const x = canvas.width * Math.random();
@@ -488,6 +504,7 @@ const Fluid: React.FC = () => {
         }
 
         function resizeCanvas() {
+            if (!canvas) return;
             if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
                 canvas.width = canvas.clientWidth;
                 canvas.height = canvas.clientHeight;
