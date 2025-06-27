@@ -44,93 +44,7 @@ Hero Section - Interactive Dot Background
 }
 
 
-/*
-==============================================
-Glassmorphic Tiles Demo - CORRECTED STYLES
-==============================================
-*/
 
-/* --- Base Setup for Tiles --- */
-:root {
-    --tile-border-radius: 12px; /* Slightly smaller radius for smaller tiles */
-    --tile-glow-color: rgba(173, 58, 242, 0.5);
-    --transition-speed: 0.3s;
-}
-
-/* --- Grid Container --- */
-.glass-tiles-grid {
-    display: grid;
-    height: 100%;
-    width: 100%;
-    gap: 8px; /* Tighter gap for a more seamless look */
-}
-
-/* --- Tile Base Style --- */
-.interactive-tile {
-    border-radius: var(--tile-border-radius);
-    position: relative;
-    overflow: hidden;
-    
-    /* Glassmorphic Effect */
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-
-    /* 3D Elevation & Shadow */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    
-    /* Smooth transitions for all effects */
-    transition: transform var(--transition-speed) cubic-bezier(0.25, 0.8, 0.25, 1),
-                box-shadow var(--transition-speed) ease-in-out;
-    
-    transform-style: preserve-3d;
-}
-
-/* --- Interactive Effects --- */
-.interactive-tile:hover {
-    box-shadow: 0 0 20px -5px var(--tile-glow-color), 0 8px 25px rgba(0, 0, 0, 0.3);
-    transform: scale(1.05);
-    z-index: 10; /* Bring hovered tile to the front */
-}
-
-.interactive-tile:active {
-    transform: scale(0.98);
-    box-shadow: 0 0 10px -5px var(--tile-glow-color), 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-/* --- Dynamic Color Shift --- */
-.interactive-tile::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 250%; /* Larger gradient to ensure smooth color transition */
-    height: 250%;
-    opacity: 0;
-    
-    background: conic-gradient(
-        from 0deg at 50% 50%,
-        #ff2975, #a33ffc, #2697ff, #30d5c8, #7ffa5b, #ffd700, #ff2975
-    );
-    
-    transition: opacity var(--transition-speed) ease-in-out;
-    animation: rotate-gradient 6s linear infinite paused;
-}
-
-.interactive-tile:hover::before {
-    opacity: 0.8; /* Slightly reduced opacity for a more subtle effect */
-    animation-play-state: running;
-}
-
-@keyframes rotate-gradient {
-    from {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-    to {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}
 
 /*
 ==============================================
@@ -574,108 +488,189 @@ Interactive 'Who Are You' Section V2
     transform: translateY(0);
   }
 }
+
+
+
 /*
 ==============================================
-3D Scroll Section
+Advanced 3D Pinned Scroll Section (v3 - Final)
 ==============================================
 */
 .three-d-scroll-section {
   position: relative;
   width: 100%;
-  height: 100vh;
-  background-color: #000;
-}
-
-.three-d-sticky-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
+  /* Increased height for a smoother, more spaced-out animation */
+  height: 600vh; 
+  background-color: #000000;
   overflow: hidden;
 }
 
-.three-d-canvas-container {
+.background-grid-3d {
   position: absolute;
-  left: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  z-index: 0;
+  background-image: radial-gradient(circle, #a855f7 1px, transparent 1px);
+  background-size: 25px 25px;
+}
+
+.three-d-sticky-container {
+  position: sticky;
   top: 0;
-  width: 50%;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  /* A 40/60 split to give content more space */
+  grid-template-columns: 40% 60%; 
+  align-items: center;
+}
+
+/* NEW: Thematic Guiding Line */
+.guiding-line-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0; /* Aligned to the left of the content area */
+  width: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 3;
+}
+
+.guiding-line {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, #a855f7, transparent);
+}
+
+.guiding-line-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #4a2c2a;
+  border: 2px solid #a855f7;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.guiding-line-dot.active {
+  background-color: #d946ef;
+  transform: scale(1.5);
+  box-shadow: 0 0 15px #d946ef;
+}
+
+.three-d-canvas-container {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  /* Initial state is now controlled by GSAP */
+}
+
+.three-d-canvas-container > div {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.three-d-content-container {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  position: relative;
+  z-index: 2;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
+  perspective: 1500px; 
 }
 
-.three-d-canvas-container canvas {
-  width: 500px !important;
-  height: 500px !important;
-  max-width: 100%;
-}
-
-.three-d-content-container {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0 5%;
-  z-index: 2;
-  pointer-events: none; /* Allows scrolling through the container */
-}
+/* Add these new rules to your index.css file */
 
 .content-card-3d {
-  background: rgba(26, 15, 46, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  border-radius: 20px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  color: white;
-  opacity: 0; /* Initially hidden */
-  transform: translateX(100%); /* Start off-screen */
-  pointer-events: auto; /* Re-enable pointer events for cards */
+  /* ... (keep existing styles) ... */
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem; /* Adjust padding for new content */
 }
 
-.content-card-title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #a855f7;
-  margin-bottom: 1rem;
+.card-image-container {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.content-card-3d:hover .card-image {
+  transform: scale(1.05);
+}
+
+.card-text-content {
+  padding: 0 0.5rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .content-card-description {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #d1d5db;
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
 }
 
-/* --- Responsive Design --- */
+.card-explore-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-image: linear-gradient(to right, #a855f7, #d946ef);
+  border-radius: 9999px;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+  align-self: flex-start; /* Align button to the left */
+}
+.card-explore-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3);
+}
+/* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
-  .three-d-scroll-section {
-    height: auto; /* Let content define height */
-  }
   .three-d-sticky-container {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+  }
+  .guiding-line-container {
+    display: none; /* Hide guiding line on mobile */
   }
   .three-d-canvas-container {
-    position: relative;
-    width: 100%;
-    height: 60vh; /* Give canvas a fixed height */
+    opacity: 0.15 !important;
   }
   .three-d-content-container {
-    position: relative;
-    width: 100%;
-    padding: 2rem 1rem;
+    grid-column: 1 / 2;
+    perspective: none;
   }
   .content-card-3d {
-    transform: none; /* Reset transform for mobile */
-    opacity: 0; /* Still start as invisible for fade-in */
+    position: relative;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin-bottom: 2rem;
   }
 }
+
 
 /*
 ==============================================
