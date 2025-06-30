@@ -499,8 +499,13 @@ Advanced 3D Pinned Scroll Section (v3 - Final)
 .three-d-scroll-section {
   position: relative;
   width: 100%;
-  /* Increased height for a smoother, more spaced-out animation */
-  height: 600vh; 
+  /* THIS IS THE FIX:
+    The height is set to 300vh (3 times the viewport height).
+    This creates the necessary "scroll runway" for the GSAP animation to play out smoothly
+    without leaving a massive blank space like 600vh did.
+    This value provides enough space for the 6 cards to transition.
+  */
+  height: 300vh; 
   background-color: #000000;
   overflow: hidden;
 }

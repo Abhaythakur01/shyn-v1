@@ -24,7 +24,7 @@ const HorizontalScrollSection: React.FC = () => {
                     // FINAL FIX: Use a fixed, generous scroll distance for the pinning.
                     // This provides a reliable "runway" for the animation and prevents the vertical
                     // scroll from taking over prematurely. 2500px is a good starting point.
-                    end: "+=2500",
+                    end: "+=1500",
                 }
             });
 
