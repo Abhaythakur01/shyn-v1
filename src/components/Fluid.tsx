@@ -1,12 +1,15 @@
 import React, { useRef, useEffect } from 'react';
 
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
+
 const Fluid: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-
+        if (isMobile) return;
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.clientHeight;
 
@@ -590,11 +593,18 @@ const Fluid: React.FC = () => {
 
     }, []);
 
-    return (
-        <canvas
-            ref={canvasRef}
-            style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 0 }}
-        />
+    return isMobile ? (
+  <div
+    className="w-full h-full absolute top-0 left-0 z-0"
+    style={{
+      background: 'radial-gradient(circle at center, #a855f7 0%, #ec4899 100%)',
+    }}
+    />
+    ) : (
+    <canvas
+        ref={canvasRef}
+        style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 0 }}
+    />
     );
 };
 
