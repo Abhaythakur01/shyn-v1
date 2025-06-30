@@ -1,27 +1,39 @@
 import React, { useRef, useEffect } from 'react';
 
-const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+import { isMobileDevice } from '../utils/deviceDetection'; // Import the new utility
 
+// --- Mobile-First Configuration ---
+// Default (Mobile) settings are less demanding
+const baseConfig = {
+    TEXTURE_DOWNSAMPLE: 2, // Higher downsampling for performance
+    DENSITY_DISSIPATION: 0.97,
+    VELOCITY_DISSIPATION: 0.98,
+    PRESSURE_DISSIPATION: 0.7,
+    PRESSURE_ITERATIONS: 15, // Fewer iterations
+    CURL: 20,
+    SPLAT_RADIUS: 0.01 // Larger radius for touch
+};
+
+// Desktop settings are more intensive
+const desktopConfig = {
+    ...baseConfig,
+    TEXTURE_DOWNSAMPLE: 1, // Lower downsampling for quality
+    DENSITY_DISSIPATION: 0.98,
+    VELOCITY_DISSIPATION: 0.99,
+    PRESSURE_ITERATIONS: 25,
+    CURL: 30,
+    SPLAT_RADIUS: 0.005
+};
 
 const Fluid: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-
+    const isMobile = isMobileDevice(); // Check device type once
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        if (isMobile) return;
+        let config = isMobile ? baseConfig : desktopConfig;
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.clientHeight;
-
-        let config = {
-            TEXTURE_DOWNSAMPLE: 1,
-            DENSITY_DISSIPATION: 0.98,
-            VELOCITY_DISSIPATION: 0.99,
-            PRESSURE_DISSIPATION: 0.8,
-            PRESSURE_ITERATIONS: 25,
-            CURL: 30,
-            SPLAT_RADIUS: 0.005
-        };
 
         let pointers: any[] = [];
         let splatStack: any[] = [];
@@ -33,11 +45,17 @@ const Fluid: React.FC = () => {
             color: [30, 0, 300]
         });
 
-        const { gl, ext } = getWebGLContext(canvas);
+        const webglContext = getWebGLContext(canvas);
+        if (!webglContext || !webglContext.gl || !webglContext.ext) {
+            canvas.style.display = 'none'; // Hide canvas if WebGL fails
+            // You can show a static fallback div here
+            return;
+        }
+        const { gl, ext } = webglContext;
 
         function getWebGLContext(canvas: HTMLCanvasElement) {
             const params = { alpha: false, depth: false, stencil: false, antialias: false };
-            let gl = canvas.getContext('webgl2', params) as WebGL2RenderingContext;
+            let gl = canvas.getContext('webgl2', params) as WebGL2RenderingContext | null;
             const isWebGL2 = !!gl;
             if (!isWebGL2) {
                  console.error("This demo requires WebGL 2.");
@@ -593,18 +611,19 @@ const Fluid: React.FC = () => {
 
     }, []);
 
-    return isMobile ? (
-  <div
-    className="w-full h-full absolute top-0 left-0 z-0"
-    style={{
-      background: 'radial-gradient(circle at center, #a855f7 0%, #ec4899 100%)',
-    }}
-    />
-    ) : (
-    <canvas
-        ref={canvasRef}
-        style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 0 }}
-    />
+    return (
+        <>
+            <div
+                className="w-full h-full absolute top-0 left-0 -z-10"
+                style={{
+                background: 'radial-gradient(circle at center, #a855f7 0%, #ec4899 100%)',
+                }}
+            />
+            <canvas
+                ref={canvasRef}
+                style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 0 }}
+            />
+        </>
     );
 };
 

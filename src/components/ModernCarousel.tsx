@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import '../styles/ModernCarousel.css';
+import { useSwipe } from '../hooks/useSwipe'; // Import the swipe hook
 
 
 const slides = [
@@ -33,6 +34,10 @@ const slides = [
 const ModernCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const swipeHandlers = useSwipe({
+    onSwipedLeft: () => setActiveIndex((prev) => (prev + 1) % slides.length),
+    onSwipedRight: () => setActiveIndex((prev) => (prev - 1 + slides.length) % slides.length),
+  });
 
   const nextSlide = () => {
     setActiveIndex((prev) => (prev + 1) % slides.length);
@@ -53,7 +58,7 @@ const ModernCarousel = () => {
   }, [activeIndex]);
 
   return (
-    <div className="carousel-wrapper full-screen">
+    <div className="carousel-wrapper full-screen" {...swipeHandlers}>
       <div className="main-slider">
         {slides.map((slide, index) => (
           <div
