@@ -746,3 +746,32 @@ Responsive Design - SUGGESTIONS
     font-size: 2.5rem; /* Adjust title font size for better readability */
   }
 }
+
+/*
+==============================================
+FIX: Mobile Performance Optimizations
+==============================================
+*/
+@media (max-width: 768px) {
+  /* Disable the expensive backdrop-filter on the expert cards for mobile */
+  .expert-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* Disable the glowing border effect on the header for mobile */
+  .nav-wrapper::before {
+    filter: none;
+    opacity: 0 !important; /* Use !important to override the :hover state */
+  }
+  
+  /* Disable the backdrop-filter on the header itself.
+    This targets the `backdrop-blur-xl` class from Tailwind.
+    We also provide a more solid background as a fallback.
+  */
+  .nav-wrapper {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: rgba(12, 0, 31, 0.7);
+  }
+}
