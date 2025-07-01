@@ -18,20 +18,52 @@ export const artForms: ArtForm[] = [
     gradient: 'bg-gradient-to-br from-stone-400/20 to-gray-600/20'
   },
   {
-    id: 'music',
-    name: 'Music',
-    description: 'Create harmony and rhythm that touches souls',
-    image: 'https://images.pexels.com/photos/164821/pexels-photo-164821.jpeg?auto=compress&cs=tinysrgb&w=800',
-    color: 'from-purple-400 to-indigo-500',
-    gradient: 'bg-gradient-to-br from-purple-400/20 to-indigo-500/20'
+    id: 'stand-up-comedy',
+    name: 'Stand-up Comedy',
+    description: 'Master the art of timing, wit, and public speaking to make audiences laugh.',
+    image: 'https://images.pexels.com/photos/2691463/pexels-photo-2691463.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    color: 'from-orange-500 to-amber-500',
+    gradient: 'bg-gradient-to-br from-orange-500/20 to-amber-500/20'
   },
   {
-    id: 'dance',
-    name: 'Dance',
-    description: 'Move your body to express the language of emotion',
-    image: 'https://images.pexels.com/photos/3646172/pexels-photo-3646172.jpeg?auto=compress&cs=tinysrgb&w=800',
-    color: 'from-amber-400 to-orange-500',
-    gradient: 'bg-gradient-to-br from-amber-400/20 to-orange-500/20'
+    id: 'poetry',
+    name: 'Poetry',
+    description: 'Weave words into powerful verses that evoke emotion and tell a story.',
+    image: 'https://images.pexels.com/photos/3757144/pexels-photo-3757144.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    color: 'from-blue-500 to-cyan-500',
+    gradient: 'bg-gradient-to-br from-blue-500/20 to-cyan-500/20'
+  },
+  {
+    id: 'storytelling',
+    name: 'Storytelling',
+    description: 'Captivate listeners with compelling narratives, characters, and plot.',
+    image: 'https://images.pexels.com/photos/764681/pexels-photo-764681.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    color: 'from-yellow-600 to-lime-500',
+    gradient: 'bg-gradient-to-br from-yellow-600/20 to-lime-500/20'
+  },
+  {
+    id: 'singing',
+    name: 'Singing',
+    description: 'Train your voice to hit every note with passion and precision.',
+    image: 'https://images.pexels.com/photos/164829/pexels-photo-164829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    color: 'from-rose-500 to-red-500',
+    gradient: 'bg-gradient-to-br from-rose-500/20 to-red-500/20'
+  },
+  {
+    id: 'dancing',
+    name: 'Dancing',
+    description: 'Express yourself through movement, rhythm, and grace.',
+    image: 'https://images.pexels.com/photos/1700809/pexels-photo-1700809.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    color: 'from-fuchsia-500 to-pink-500',
+    gradient: 'bg-gradient-to-br from-fuchsia-500/20 to-pink-500/20'
+  },
+  {
+    id: 'rap',
+    name: 'Rap',
+    description: 'Master flow, rhyme, and lyricism to become a powerful MC.',
+    image: 'https://images.pexels.com/photos/8745919/pexels-photo-8745919.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    color: 'from-gray-500 to-slate-500',
+    gradient: 'bg-gradient-to-br from-gray-500/20 to-slate-500/20'
   },
   {
     id: 'writing',

@@ -1,105 +1,146 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import '../styles/ModernCarousel.css';
-import { useSwipe } from '../hooks/useSwipe'; // Import the swipe hook
+import { useSwipe } from '../hooks/useSwipe';
 
+interface Slide {
+  title: string;
+  description: string;
+  image: string;
+  thumbnail: string;
+  path: string; // Added path for navigation
+}
 
-const slides = [
-  {
-    title: 'Explore New Mediums',
-    description: 'Discover untapped potential in every brushstroke, click, or pose.',
-    image: '/images/img1.jpeg',
-    thumbnail: '/images/img1.jpeg'
-  },
-  {
-    title: 'Meet the Mentors',
-    description: 'Real stories from real artists. Learn from industry legends.',
-    image: '/images/img2.jpeg',
-    thumbnail: '/images/img2.jpeg'
-  },
-  {
-    title: 'Level Up Your Skills',
-    description: 'Workshops and bootcamps for every level. Let your art evolve.',
-    image: '/images/img3.jpeg',
-    thumbnail: '/images/img3.jpeg'
-  },
-  {
-    title: 'Join a Global Community',
-    description: 'Be part of something bigger. Share your art, get discovered.',
-    image: '/images/img4.jpeg',
-    thumbnail: '/images/img4.jpeg'
-  }
-];
+interface CarouselConfig {
+  transitionSpeed?: number;
+  autoScroll?: boolean;
+  autoScrollInterval?: number;
+  showThumbnails?: boolean;
+  onSlideChange?: (index: number) => void;
+}
 
-const ModernCarousel = () => {
+interface CarouselProps {
+  slides: Slide[];
+  config?: CarouselConfig;
+}
+
+const ModernCarousel: React.FC<CarouselProps> = ({
+  slides,
+  config = {
+    transitionSpeed: 800,
+    autoScroll: true,
+    autoScrollInterval: 7000,
+    showThumbnails: true,
+  },
+}) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [prevActiveIndex, setPrevActiveIndex] = useState<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const swipeHandlers = useSwipe({
-    onSwipedLeft: () => setActiveIndex((prev) => (prev + 1) % slides.length),
-    onSwipedRight: () => setActiveIndex((prev) => (prev - 1 + slides.length) % slides.length),
+    onSwipedLeft: () => nextSlide(),
+    onSwipedRight: () => prevSlide(),
   });
 
+  const goToSlide = (index: number) => {
+    if (index === activeIndex) return;
+    setPrevActiveIndex(activeIndex);
+    setActiveIndex(index);
+  };
+
   const nextSlide = () => {
-    setActiveIndex((prev) => (prev + 1) % slides.length);
+    const nextIndex = (activeIndex + 1) % slides.length;
+    goToSlide(nextIndex);
   };
 
   const prevSlide = () => {
-    setActiveIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    const prevIndex = (activeIndex - 1 + slides.length) % slides.length;
+    goToSlide(prevIndex);
   };
 
   useEffect(() => {
-    timeoutRef.current = setTimeout(() => {
-      nextSlide();
-    }, 7000);
-
+    if (config.autoScroll) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(nextSlide, config.autoScrollInterval);
+    }
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
+  }, [activeIndex, config.autoScroll, config.autoScrollInterval]);
+
+  useEffect(() => {
+    if(config.onSlideChange) {
+        config.onSlideChange(activeIndex);
+    }
+  }, [activeIndex, config.onSlideChange]);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
   }, [activeIndex]);
 
   return (
     <div className="carousel-wrapper full-screen" {...swipeHandlers}>
       <div className="main-slider">
-        {slides.map((slide, index) => (
-          <div
-            className={`slide ${index === activeIndex ? 'active' : ''}`}
-            key={index}
-          >
-            <img src={slide.image} className="main-image" alt={slide.title} />
-            <div className="slide-content">
-              <h2>{slide.title}</h2>
-              <p>{slide.description}</p>
-              <button className="btn-explore">
-                Explore <ArrowRight size={16} />
-              </button>
+        {slides.map((slide, index) => {
+          const isActive = index === activeIndex;
+          const isPrevActive = index === prevActiveIndex;
+          let className = 'slide';
+          if (isActive) className += ' active';
+          if (isPrevActive) className += ' prev-active';
+          
+          return (
+            <div key={index} className={className}>
+              <img src={slide.image} className="main-image" alt={slide.title} loading="lazy" />
+              <div className="slide-content">
+                <h2>{slide.title}</h2>
+                <p>{slide.description}</p>
+                {/* The button is now a Link */}
+                <Link to={slide.path} className="btn-explore">
+                  Explore <ArrowRight size={16} />
+                </Link>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      <div className="preview-thumbnails gallery-style">
+      {config.showThumbnails && (
+        <div className="preview-thumbnails gallery-style">
           {slides.map((slide, index) => (
-        <div
-          key={index}
-          className={`thumbnail-wrapper ${index === activeIndex ? 'active' : ''}`}
-          onClick={() => setActiveIndex(index)}
-        >
-          <img
-            src={slide.thumbnail}
-            alt={slide.title}
-            className="thumbnail rounded-thumbnail"
-          />
-          <div className="thumb-label">
-            <div className="title">Name Slider</div>
-            <div className="description">Description</div>
-          </div>
+            <div
+              key={index}
+              className={`thumbnail-wrapper ${index === activeIndex ? 'active' : ''}`}
+              onClick={() => goToSlide(index)}
+              tabIndex={0}
+              role="button"
+              aria-label={`Slide ${index + 1}: ${slide.title}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') goToSlide(index);
+              }}
+            >
+              <img
+                src={slide.thumbnail}
+                alt={slide.title}
+                className="thumbnail rounded-thumbnail"
+                loading="lazy"
+              />
+              <div className="thumb-label">
+                <div className="title">{slide.title}</div>
+              </div>
+            </div>
+          ))}
         </div>
-            ))}
-      </div>
+      )}
 
       <div className="carousel-controls">
-        <button onClick={prevSlide}><ArrowLeft /></button>
-        <button onClick={nextSlide}><ArrowRight /></button>
+        <button onClick={prevSlide} aria-label="Previous slide"><ArrowLeft /></button>
+        <button onClick={nextSlide} aria-label="Next slide"><ArrowRight /></button>
       </div>
     </div>
   );

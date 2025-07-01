@@ -4,50 +4,53 @@ import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import ArtFormPage from './pages/ArtFormPage';
 import PortfolioPage from './pages/PortfolioPage';
-// import MouseTrail from './components/MouseTrail'; // FIX: Removed the heavier mouse trail component
+import MouseTrail from './components/MouseTrail';
 import CustomCursor from './components/CustomCursor';
-import { useDeviceDetection } from './utils/deviceDetection'; // Import the device detection hook
+import { useDeviceDetection } from './utils/deviceDetection';
 
-/**
- * A component that contains the logic for the main app layout.
- * This keeps the main App component clean.
- */
+// Import the new pages
+import BlogsPage from './pages/BlogsPage';
+import BlogDetailPage from './pages/BlogDetailPage';
+import WhoAreYouPage from './pages/WhoAreYouPage';
+import MembershipPage from './pages/MembershipPage';
+import ExpertsPage from './pages/ExpertsPage';
+
+
 const AppContent: React.FC = () => {
   const location = useLocation();
-  const { isMobile } = useDeviceDetection(); // Check if the device is mobile
+  const { isMobile } = useDeviceDetection();
 
-  // Define the paths where the header should NOT be displayed.
   const noHeaderPaths = ['/tiles-demo'];
-  // Check if the current path is in the noHeaderPaths array.
   const showHeader = !noHeaderPaths.includes(location.pathname);
 
   return (
     <div className="min-h-screen">
-      {/* FIX: The redundant MouseTrail component has been removed. 
-          We only render the CustomCursor on non-mobile devices.
-      */}
-      {!isMobile && <CustomCursor />}
+      {!isMobile && (
+        <>
+          <MouseTrail />
+          <CustomCursor />
+        </>
+      )}
       
-      {/* The Header is now rendered only if showHeader is true */}
       {showHeader && <Header />}
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/blogs" element={<HomePage />} />
-        <Route path="/who-are-you" element={<HomePage />} />
-        <Route path="/membership" element={<HomePage />} />
-        <Route path="/experts" element={<HomePage />} />
+        
+        {/* Corrected Routes to point to the new dedicated pages */}
+        <Route path="/blogs" element={<BlogsPage />} />
+        <Route path="/blog/:id" element={<BlogDetailPage />} />
+        <Route path="/who-are-you" element={<WhoAreYouPage />} />
+        <Route path="/membership" element={<MembershipPage />} />
+        <Route path="/experts" element={<ExpertsPage />} />
+        
+        {/* Existing Routes */}
         <Route path="/art-form/:id" element={<ArtFormPage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
-       
       </Routes>
     </div>
   );
 };
 
-/**
- * The main App component now wraps everything in the Router 
- * and renders the AppContent which handles the conditional logic.
- */
 function App() {
   return (
     <Router>

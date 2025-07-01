@@ -8,42 +8,42 @@ const Spline = React.lazy(() => import('@splinetool/react-spline'));
 
 gsap.registerPlugin(ScrollTrigger);
 
-const contentData = [
+const contentData = [ 
   {
     icon: Compass,
     title: 'Discover Your Passion',
     description: 'Explore a universe of art forms. Find the path that truly resonates with your creative spirit.',
-    image: 'https://images.pexels.com/photos/1509534/pexels-photo-1509534.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/images/discover.jpeg',
   },
   {
     icon: Users,
     title: 'Learn from Experts',
     description: 'Connect with world-class artists and instructors. Our curated courses provide you with the tools to elevate your skills.',
-    image: 'https://images.pexels.com/photos/1145720/pexels-photo-1145720.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/images/experts.jpeg',
   },
   {
     icon: Layers,
     title: 'Build Your Portfolio',
     description: 'Showcase your work in a stunning, professional portfolio and let your unique talent shine for the world to see.',
-    image: 'https://images.pexels.com/photos/1053687/pexels-photo-1053687.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/images/portfolio.jpeg',
   },
   {
     icon: ShieldCheck,
     title: 'Join a Safe Community',
     description: 'Become part of a vibrant, supportive community of fellow artists. Collaborate, get feedback, and find inspiration.',
-    image: 'https://images.pexels.com/photos/714701/pexels-photo-714701.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/images/community.jpeg',
   },
   {
     icon: Award,
     title: 'Gain Recognition',
     description: 'Participate in challenges, earn badges, and get your work featured to a global audience.',
-    image: 'https://images.pexels.com/photos/111131/peacock-feathers-macaw-feathers-peacock-111131.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/images/recognition.jpeg',
   },
   {
     icon: Rocket,
     title: 'Launch Your Career',
     description: 'Access resources on marketing, sales, and business to turn your passion into a profession.',
-    image: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=800',
+    image: '/images/career.jpeg',
   },
 ];
 

@@ -1,84 +1,59 @@
-import React, { Suspense, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF } from '@react-three/drei';
-import * as THREE from 'three';
-import ImageCarousel from './ImageCarousel';
-import { useDeviceDetection } from '../utils/deviceDetection'; // Import the device detection hook
+import React from 'react';
+import ModernCarousel from './ModernCarousel';
 
-// --- Component to Load Your GLB Model ---
-function RobotModel(props: any) {
-  // Assumes your model is in the /public/images/ folder
-  const { scene } = useGLTF('/images/greeting_robot.gltf');
-  const modelRef = useRef<THREE.Group>(null);
-
-  // Subtle animation for the model
-  useFrame((state) => {
-    if (modelRef.current) {
-      modelRef.current.rotation.y = Math.sin(state.clock.getElapsedTime() * 0.5) * 0.3;
-      modelRef.current.position.y = -1.5 + Math.sin(state.clock.getElapsedTime()) * 0.1;
-    }
-  });
-
-  return (
-    <primitive
-      ref={modelRef}
-      object={scene}
-      scale={2.5}
-      position={[0, -1.5, 0]}
-      {...props}
-    />
-  );
-}
+// --- Slides Data for the Carousel ---
+const slides = [
+  {
+    title: 'Stand-up Comedy',
+    description: 'Master the art of timing, wit, and public speaking to make audiences laugh.',
+    image: 'https://images.pexels.com/photos/2691463/pexels-photo-2691463.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    thumbnail: 'https://images.pexels.com/photos/2691463/pexels-photo-2691463.jpeg?auto=compress&cs=tinysrgb&w=400',
+    path: '/art-form/stand-up-comedy'
+  },
+  {
+    title: 'Poetry',
+    description: 'Weave words into powerful verses that evoke emotion and tell a story.',
+    image: 'https://images.pexels.com/photos/3757144/pexels-photo-3757144.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    thumbnail: 'https://images.pexels.com/photos/3757144/pexels-photo-3757144.jpeg?auto=compress&cs=tinysrgb&w=400',
+    path: '/art-form/poetry'
+  },
+  {
+    title: 'Storytelling',
+    description: 'Captivate listeners with compelling narratives, characters, and plot.',
+    image: 'https://images.pexels.com/photos/764681/pexels-photo-764681.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    thumbnail: 'https://images.pexels.com/photos/764681/pexels-photo-764681.jpeg?auto=compress&cs=tinysrgb&w=400',
+    path: '/art-form/storytelling'
+  },
+  {
+    title: 'Singing',
+    description: 'Train your voice to hit every note with passion and precision.',
+    image: 'https://images.pexels.com/photos/164829/pexels-photo-164829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    thumbnail: 'https://images.pexels.com/photos/164829/pexels-photo-164829.jpeg?auto=compress&cs=tinysrgb&w=400',
+    path: '/art-form/singing'
+  },
+  {
+    title: 'Dancing',
+    description: 'Express yourself through movement, rhythm, and grace.',
+    image: 'https://images.pexels.com/photos/1700809/pexels-photo-1700809.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    thumbnail: 'https://images.pexels.com/photos/1700809/pexels-photo-1700809.jpeg?auto=compress&cs=tinysrgb&w=400',
+    path: '/art-form/dancing'
+  },
+  {
+    title: 'Rap',
+    description: 'Master flow, rhyme, and lyricism to become a powerful MC.',
+    image: 'https://images.pexels.com/photos/8745919/pexels-photo-8745919.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    thumbnail: 'https://images.pexels.com/photos/8745919/pexels-photo-8745919.jpeg?auto=compress&cs=tinysrgb&w=400',
+    path: '/art-form/rap'
+  }
+];
 
 const WhoAreYouSection: React.FC = () => {
-  const { isMobile } = useDeviceDetection(); // Check if the device is mobile
-
   return (
+    // The section now directly wraps the carousel, which is styled to be full-screen.
     <section className="who-are-you-section">
-      <div className="who-are-you-container">
-        {/* --- Left Column: 3D Robot or Static Image --- */}
-        <div className="robot-canvas-container">
-          {/* FIX: Conditionally render the 3D canvas or a fallback image */}
-          {isMobile ? (
-            <img 
-              // You should create a placeholder image for the robot
-              src="/images/greeting_robot.gltf" 
-              alt="Greeting Robot"
-              style={{ 
-                width: '100%', 
-                height: '100%', 
-                objectFit: 'contain', 
-                padding: '2rem' 
-              }} 
-            />
-          ) : (
-            <Canvas camera={{ position: [0, 1, 8], fov: 50 }}>
-              <ambientLight intensity={1.5} />
-              <pointLight position={[10, 10, 10]} intensity={200} />
-              <directionalLight position={[-5, 5, 5]} intensity={3} />
-              <Suspense fallback={null}>
-                <RobotModel />
-              </Suspense>
-            </Canvas>
-          )}
-        </div>
-
-        {/* --- Right Column: Swipe-Friendly Carousel --- */}
-        <div className="carousel-column">
-          <h2 className="who-are-you-title">
-            What kind of artist are <span className="highlight-text">you?</span>
-          </h2>
-          <p className="who-are-you-subtitle">
-            Select an art form to see how we can help you grow.
-          </p>
-          <ImageCarousel />
-        </div>
-      </div>
+      <ModernCarousel slides={slides} />
     </section>
   );
 };
-
-// Preload the model to improve initial load time on desktop
-useGLTF.preload('/images/greeting_robot.gltf');
 
 export default WhoAreYouSection;
