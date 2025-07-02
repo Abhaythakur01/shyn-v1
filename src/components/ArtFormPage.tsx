@@ -1,19 +1,21 @@
 import React, { useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ArrowLeft, Play, Users, BookOpen, Award } from 'lucide-react';
 import { gsap } from 'gsap';
 import { artForms } from '../data/constants';
+import { ArtFormContent } from '../types'; ///art-forms/dancing
 
-const ArtFormPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+
+interface ArtFormPageProps {
+  content: ArtFormContent;
+}
+
+const ArtFormPage: React.FC<ArtFormPageProps> = ({ content: artForm }) => {
   const heroRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const artForm = artForms.find(form => form.id === id);
-
   useEffect(() => {
-    if (!artForm) return;
-
+    window.scrollTo(0, 0);
     // Animate page entrance
     const tl = gsap.timeline();
     
@@ -27,19 +29,6 @@ const ArtFormPage: React.FC = () => {
       '-=0.3'
     );
   }, [artForm]);
-
-  if (!artForm) {
-    return (
-      <div className="min-h-screen pt-16 flex items-center justify-center bg-gray-900">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Art Form Not Found</h1>
-          <Link to="/who-are-you" className="text-purple-400 hover:text-purple-300">
-            ← Back to Art Forms
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen pt-16 bg-gray-900">
@@ -75,23 +64,18 @@ const ArtFormPage: React.FC = () => {
           <div className="lg:col-span-2 space-y-8">
             {/* Introduction */}
             <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
-              <h2 className="text-3xl font-bold text-white mb-6">Discover the Art of {artForm.name}</h2>
+              <h2 className="text-3xl font-bold text-white mb-6">{artForm.introduction.title}</h2>
               <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                {artForm.name} is a profound form of artistic expression that allows you to communicate emotions, 
-                ideas, and perspectives through unique mediums and techniques. Whether you're a complete beginner 
-                or looking to refine your skills, our comprehensive approach will guide you through every step 
-                of your creative journey.
+                {artForm.introduction.body1}
               </p>
               <p className="text-gray-300 leading-relaxed">
-                Our expert instructors bring years of professional experience and a passion for teaching that 
-                will inspire and challenge you to reach new heights in your artistic development. Join thousands 
-                of artists who have discovered their creative potential through our structured learning programs.
+                {artForm.introduction.body2}
               </p>
             </div>
 
             {/* Video Section */}
             <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
-              <h3 className="text-2xl font-bold text-white mb-6">Featured Workshop</h3>
+              <h3 className="text-2xl font-bold text-white mb-6">{artForm.featuredWorkshop.title}</h3>
               <div className="relative bg-gray-900 rounded-xl overflow-hidden aspect-video">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <button className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-full p-4 hover:bg-white/30 transition-all duration-200">
@@ -99,13 +83,13 @@ const ArtFormPage: React.FC = () => {
                   </button>
                 </div>
                 <img 
-                  src={artForm.image} 
-                  alt={`${artForm.name} workshop`}
+                  src={artForm.featuredWorkshop.videoPlaceholder.image} 
+                  alt={artForm.featuredWorkshop.videoPlaceholder.alt}
                   className="w-full h-full object-cover opacity-50"
                 />
               </div>
               <p className="text-gray-400 mt-4">
-                Introduction to {artForm.name}: Fundamentals and Techniques
+                {artForm.featuredWorkshop.description}
               </p>
             </div>
 
@@ -113,14 +97,7 @@ const ArtFormPage: React.FC = () => {
             <div className="bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-700">
               <h3 className="text-2xl font-bold text-white mb-6">What You'll Learn</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {[
-                  'Fundamental principles and theory',
-                  'Essential tools and materials',
-                  'Basic to advanced techniques',
-                  'Style development and personal expression',
-                  'Composition and design principles',
-                  'Professional presentation methods'
-                ].map((technique, index) => (
+                {artForm.whatYouWillLearn.map((technique, index) => (
                   <div key={index} className="flex items-start space-x-3">
                     <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${artForm.color} mt-2 flex-shrink-0`}></div>
                     <span className="text-gray-300">{technique}</span>
@@ -140,21 +117,21 @@ const ArtFormPage: React.FC = () => {
                   <Users size={20} className="text-purple-400" />
                   <div>
                     <p className="font-medium text-white">Students Enrolled</p>
-                    <p className="text-sm text-gray-400">2,847 active learners</p>
+                    <p className="text-sm text-gray-400">{artForm.courseInfo.students}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <BookOpen size={20} className="text-purple-400" />
                   <div>
                     <p className="font-medium text-white">Lessons</p>
-                    <p className="text-sm text-gray-400">24 comprehensive modules</p>
+                    <p className="text-sm text-gray-400">{artForm.courseInfo.modules}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Award size={20} className="text-purple-400" />
                   <div>
                     <p className="font-medium text-white">Certification</p>
-                    <p className="text-sm text-gray-400">Upon completion</p>
+                    <p className="text-sm text-gray-400">{artForm.courseInfo.certification}</p>
                   </div>
                 </div>
               </div>
@@ -162,12 +139,12 @@ const ArtFormPage: React.FC = () => {
 
             {/* CTA */}
             <div className={`bg-gray-800 border border-gray-700 rounded-2xl p-6 text-center`}>
-              <h3 className="text-xl font-bold text-white mb-3">Ready to Begin?</h3>
+              <h3 className="text-xl font-bold text-white mb-3">{artForm.cta.title}</h3>
               <p className="text-gray-300 mb-6">
-                Start your {artForm.name.toLowerCase()} journey today with our expert-led courses
+                {artForm.cta.description}
               </p>
               <button className={`w-full bg-gradient-to-r ${artForm.color} text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200`}>
-                Enroll Now
+                {artForm.cta.buttonText}
               </button>
             </div>
 

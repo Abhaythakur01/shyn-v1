@@ -119,6 +119,7 @@
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 5;
+  transition: scrollbar-color 0.3s ease-in-out;
 }
 
 .thumbnail-wrapper {
@@ -194,6 +195,42 @@
     opacity: 1;
   }
 }
+
+/* --- NEW: Custom Scrollbar for Thumbnails --- */
+.preview-thumbnails.gallery-style::-webkit-scrollbar {
+  width: 8px;
+}
+
+.preview-thumbnails.gallery-style::-webkit-scrollbar-track {
+  background: transparent; /* Transparent track */
+}
+
+.preview-thumbnails.gallery-style::-webkit-scrollbar-thumb {
+  background: transparent; /* Transparent thumb by default */
+  border-radius: 4px;
+  transition: background 0.3s ease-in-out;
+}
+
+/* Show scrollbar thumb when hovering over the thumbnail container */
+.preview-thumbnails.gallery-style:hover::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Make thumb slightly more visible when hovering directly over it */
+.preview-thumbnails.gallery-style::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* Firefox scrollbar styling */
+.preview-thumbnails.gallery-style {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent; /* thumb color | track color */
+}
+
+.preview-thumbnails.gallery-style:hover {
+  scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+}
+
 
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {

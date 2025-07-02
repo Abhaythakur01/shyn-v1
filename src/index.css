@@ -2,12 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@import './styles/scrollbar.css';
+
 body {
   background-color: #0c001f; /* This color matches your fluid hero background */
+  /* Hide the default system cursor to show only our custom effects */
+  cursor: none;
 }
 
-/* Import custom scrollbar styles */
-@import './styles/scrollbar.css';
+/* Ensure interactive elements don't show the default pointer */
+a, button, input, [role="button"] {
+  cursor: none;
+}
+
+/*
+==============================================
+Minimal Elegant Scrollbar v5.0 – Thumb Only on Scroll
+==============================================
+*/
+
+/* --- WebKit Browsers (Chrome, Safari, Edge) --- */
+::-webkit-scrollbar {
+  width: 12px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(168, 85, 247, 0); /* Initially invisible */
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  transition: background-color 0.3s ease-in-out;
+  opacity: 0;
+}
+
+/* Show thumb while scrolling */
+body.scrolling::-webkit-scrollbar-thumb {
+  background-color: rgba(168, 85, 247, 0.7); /* Purple */
+  opacity: 1;
+}
+
+/* --- Firefox --- */
+html {
+  scrollbar-width: none; /* Hide scrollbar by default */
+}
+
+/* Show thumb in Firefox while scrolling (partial support) */
+@supports (-moz-appearance: none) {
+  html.scrolling {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(168, 85, 247, 0.7) transparent;
+  }
+}
+
+
+
+
+
 
 /*
 ==============================================
@@ -83,6 +139,9 @@ Header Glowing Border Effect
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box, /* The inner area (will be transparent) */
     linear-gradient(#fff 0 0); /* The outer area (will be visible) */
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
 
   /* The composite operation subtracts the inner area from the outer area */
   -webkit-mask-composite: xor;
@@ -108,39 +167,48 @@ Horizontal Scroll Section - OVERLAP FIX
 */
 .horizontal-scroll-container {
   width: 100%;
-  /* The height will be determined by the pinning, so we don't need a fixed vh */
   overflow: hidden;
 }
 
 .panels-container {
-  width: 300%; /* 100% for each of the 3 panels */
-  height: 100vh; /* Each panel takes up the full viewport height */
+  width: 300%;
+  height: 100vh;
   display: flex;
   flex-wrap: nowrap;
 }
 
 .panel {
-  /* This is the most critical part of the fix:
-     Each panel MUST be 100% of the viewport width (100vw). */
+  position: relative;
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
-  position: relative;
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+.panel video.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
 }
 
 .panel::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5); /* dark overlay for legibility */
   z-index: 1;
 }
 
 .panel-content {
+  z-index: 2; /* above video + overlay */
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -148,15 +216,21 @@ Horizontal Scroll Section - OVERLAP FIX
   max-width: 1400px;
   padding: 4rem;
   gap: 4rem;
-  position: relative;
-  z-index: 2;
+  flex-wrap: wrap;
 }
 
-.panel-discover { background: url('https://images.pexels.com/photos/1509534/pexels-photo-1509534.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover; }
-.panel-experts { background: url('https://images.pexels.com/photos/1145720/pexels-photo-1145720.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover; }
-.panel-showcase { background: url('https://images.pexels.com/photos/1053687/pexels-photo-1053687.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover; }
 
-.text-content { flex-basis: 50%; }
+.panel-experts {
+  background: url('/assets/images/experts-bg.jpg') center/cover no-repeat;
+}
+.panel-showcase {
+  background: url('/assets/images/showcase-bg.jpg') center/cover no-repeat;
+}
+
+.text-content {
+  flex-basis: 50%;
+  min-width: 300px;
+}
 
 .cta-button {
   display: inline-flex;
@@ -173,43 +247,47 @@ Horizontal Scroll Section - OVERLAP FIX
   box-shadow: 0 10px 20px rgba(168, 85, 247, 0.4);
 }
 
-.image-grid {
+/* ✨ NEW: Video Wrapper for Panel 1 */
+.video-wrapper {
   flex-basis: 40%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  transform: rotate(-5deg);
+  max-width: 600px;
+  aspect-ratio: 16 / 9;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
 }
-.image-box {
-  padding-top: 100%;
-  background-size: cover;
-  background-position: center;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  transition: all 0.3s ease;
+.video-wrapper:hover {
+  transform: scale(1.03);
 }
-.image-box:hover {
-  transform: scale(1.05) rotate(3deg);
-  z-index: 10;
+.video-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: inherit;
 }
 
+/* Experts Panel */
 .expert-cards {
   flex-basis: 50%;
   display: flex;
   gap: 1.5rem;
+  flex-wrap: wrap;
 }
 .expert-card {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 1.5rem;
   text-align: center;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
+  flex: 1 1 30%;
 }
 .expert-card:hover {
   transform: translateY(-10px);
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 .expert-card img {
   width: 120px;
@@ -219,9 +297,16 @@ Horizontal Scroll Section - OVERLAP FIX
   margin: 0 auto 1rem;
   border: 3px solid #a855f7;
 }
-.expert-card h3 { font-size: 1.25rem; font-weight: bold; margin-bottom: 0.25rem; }
-.expert-card p { color: #d1d5db; }
+.expert-card h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+.expert-card p {
+  color: #d1d5db;
+}
 
+/* Showcase Panel */
 .portfolio-showcase {
   flex-basis: 50%;
   position: relative;
@@ -231,13 +316,25 @@ Horizontal Scroll Section - OVERLAP FIX
   position: absolute;
   width: 70%;
   border-radius: 15px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
   transition: all 0.4s ease;
 }
-.portfolio-showcase img:nth-child(1) { transform: rotate(-8deg) translate(-20%, 0); z-index: 1; }
-.portfolio-showcase img:nth-child(2) { transform: rotate(2deg) translate(20%, 10%); z-index: 2; }
-.portfolio-showcase img:nth-child(3) { transform: rotate(10deg) translate(0, -10%); z-index: 3; }
-.portfolio-showcase:hover img { transform: rotate(0) translate(0,0); }
+.portfolio-showcase img:nth-child(1) {
+  transform: rotate(-8deg) translate(-20%, 0);
+  z-index: 1;
+}
+.portfolio-showcase img:nth-child(2) {
+  transform: rotate(2deg) translate(20%, 10%);
+  z-index: 2;
+}
+.portfolio-showcase img:nth-child(3) {
+  transform: rotate(10deg) translate(0, -10%);
+  z-index: 3;
+}
+.portfolio-showcase:hover img {
+  transform: rotate(0) translate(0, 0);
+}
+
 
 /*
 ==============================================
@@ -665,24 +762,6 @@ Custom Circular Cursor
   transform: translate(-50%, -50%); /* Center the cursor on the mouse position */
 }
 
-/*
-==============================================
-Global Styles & Cursor Reset
-==============================================
-*/
-body {
-  background-color: #0c001f;
-  /* Hide the default system cursor to show only our custom effects */
-  cursor: none;
-}
-
-/* Ensure interactive elements don't show the default pointer */
-a, button, input, [role="button"] {
-  cursor: none;
-}
-
-/* Import custom scrollbar styles */
-@import './styles/scrollbar.css';
 
 /*
 ==============================================

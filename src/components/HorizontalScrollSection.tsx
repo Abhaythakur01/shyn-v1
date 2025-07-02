@@ -53,71 +53,63 @@ const HorizontalScrollSection: React.FC = () => {
             <div ref={slider} className="panels-container">
                 {/* Panel 1: Discover */}
                 <section className="panel panel-discover">
+                    {/* 🔥 Background video */}
+                    <video
+                        className="bg-video"
+                        src="/assets/videos/discover.mp4"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                    />
+
                     <div className="panel-content">
                         <div className="text-content animate-content">
-                            <h2 className="text-6xl font-bold mb-4">Get your video recorded</h2>
-                            <p className="text-xl max-w-2xl mb-8">Not sure where to start? Explore a universe of creativity and find the path that speaks to you.</p>
-                            <button className="cta-button">
-                                <span>Explore Now</span>
-                                <ArrowRight size={20} />
-                            </button>
-                        </div>
-                        <div className="image-grid">
-                            <div className="image-box animate-content" style={{ backgroundImage: "url('https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg?auto=compress&cs=tinysrgb&w=600')" }}></div>
-                            <div className="image-box animate-content" style={{ backgroundImage: "url('https://images.pexels.com/photos/164821/pexels-photo-164821.jpeg?auto=compress&cs=tinysrgb&w=600')" }}></div>
-                            <div className="image-box animate-content" style={{ backgroundImage: "url('https://images.pexels.com/photos/3646172/pexels-photo-3646172.jpeg?auto=compress&cs=tinysrgb&w=600')" }}></div>
-                            <div className="image-box animate-content" style={{ backgroundImage: "url('https://images.pexels.com/photos/261763/pexels-photo-261763.jpeg?auto=compress&cs=tinysrgb&w=600')" }}></div>
+                        <h2 className="text-6xl font-bold mb-4">Get your video recorded</h2>
+                        <p className="text-xl max-w-2xl mb-8">
+                            Not sure where to start? Explore a universe of creativity and find the path that speaks to you.
+                        </p>
+                        <button className="cta-button">
+                            <span>Explore Now</span>
+                            <ArrowRight size={20} />
+                        </button>
                         </div>
                     </div>
                 </section>
 
                 {/* Panel 2: Experts */}
                 <section className="panel panel-experts">
-                     <div className="panel-content">
+                <video className="bg-video" src="/assets/videos/experts.mp4" autoPlay muted loop playsInline />
+                    <div className="panel-content">
                         <div className="text-content animate-content">
-                            <h2 className="text-6xl font-bold mb-4">Learn From The Best</h2>
-                            <p className="text-xl max-w-2xl mb-8">Our world-class experts are here to guide you every step of the way. Master new skills with personalized feedback.</p>
-                             <button className="cta-button">
-                                <span>Meet the Experts</span>
-                                <ArrowRight size={20} />
-                            </button>
-                        </div>
-                        <div className="expert-cards">
-                            <div className="expert-card animate-content">
-                                <img src="https://images.pexels.com/photos/3761509/pexels-photo-3761509.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Expert 1"/>
-                                <h3>Elena Rodriguez</h3>
-                                <p>Abstract Painting</p>
-                            </div>
-                             <div className="expert-card animate-content">
-                                <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Expert 2"/>
-                                <h3>Marcus Chen</h3>
-                                <p>Digital Photography</p>
-                            </div>
-                             <div className="expert-card animate-content">
-                                <img src="https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Expert 3"/>
-                                <h3>Sofia Williams</h3>
-                                <p>Contemporary Dance</p>
-                            </div>
+                        <h2 className="text-6xl font-bold mb-4">Learn From The Best</h2>
+                        <p className="text-xl max-w-2xl mb-8">
+                            Our world-class experts are here to guide you every step of the way. Master new skills with personalized feedback.
+                        </p>
+                        <button className="cta-button">
+                            <span>Meet the Experts</span>
+                            <ArrowRight size={20} />
+                        </button>
+                        
                         </div>
                     </div>
                 </section>
 
                 {/* Panel 3: Showcase */}
                 <section className="panel panel-showcase">
+                    <video className="bg-video" src="/assets/videos/showcase.mp4" autoPlay muted loop playsInline />
                     <div className="panel-content">
                         <div className="text-content animate-content">
-                            <h2 className="text-6xl font-bold mb-4">Showcase Your Talent</h2>
-                            <p className="text-xl max-w-2xl mb-8">Build a stunning portfolio, connect with a global community, and let your art SHYN.</p>
-                             <button className="cta-button">
-                                <span>Start Your Portfolio</span>
-                                <ArrowRight size={20} />
-                            </button>
+                        <h2 className="text-6xl font-bold mb-4">Showcase Your Talent</h2>
+                        <p className="text-xl max-w-2xl mb-8">
+                            Build a stunning portfolio, connect with a global community, and let your art SHYN.
+                        </p>
+                        <button className="cta-button">
+                            <span>Start Your Portfolio</span>
+                            <ArrowRight size={20} />
+                        </button>
                         </div>
-                        <div className="portfolio-showcase animate-content">
-                            <img src="https://images.pexels.com/photos/1269968/pexels-photo-1269968.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Artwork 1"/>
-                            <img src="https://images.pexels.com/photos/326576/pexels-photo-326576.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Artwork 2"/>
-                             <img src="https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Artwork 3"/>
-                        </div>
+                      
                     </div>
                 </section>
             </div>

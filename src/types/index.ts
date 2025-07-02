@@ -40,3 +40,36 @@ export interface BlogPost {
   date: string;
   readTime: string;
 }
+
+// Added the missing interface
+export interface ArtFormContent {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  color: string;
+  introduction: {
+    title: string;
+    body1: string;
+    body2: string;
+  };
+  featuredWorkshop: {
+    title: string;
+    videoPlaceholder: {
+      image: string;
+      alt: string;
+    };
+    description: string;
+  };
+  whatYouWillLearn: string[];
+  courseInfo: {
+    students: string;
+    modules: string;
+    certification: string;
+  };
+  cta: {
+    title: string;
+    description: string;
+    buttonText: string;
+  };
+}
