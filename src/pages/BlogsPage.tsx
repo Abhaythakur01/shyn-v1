@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { blogPosts } from '../data/constants';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useScrollAnimation';
 import { ArrowRight, Calendar, Clock } from 'lucide-react';
-import Footer from '../components/Footer';
+
 
 const BlogsPage: React.FC = () => {
   const sectionRef = useScrollAnimation();
@@ -58,7 +58,7 @@ const BlogsPage: React.FC = () => {
           ))}
         </div>
       </div>
-      <Footer />
+    
     </div>
   );
 };

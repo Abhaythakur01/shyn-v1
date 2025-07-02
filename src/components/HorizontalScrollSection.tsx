@@ -53,7 +53,7 @@ const HorizontalScrollSection: React.FC = () => {
             <div ref={slider} className="panels-container">
                 {/* Panel 1: Discover */}
                 <section className="panel panel-discover">
-                    {/* 🔥 Background video */}
+                    {/*  Background video */}
                     <video
                         className="bg-video"
                         src="/assets/videos/discover.mp4"
@@ -82,12 +82,12 @@ const HorizontalScrollSection: React.FC = () => {
                 <video className="bg-video" src="/assets/videos/experts.mp4" autoPlay muted loop playsInline />
                     <div className="panel-content">
                         <div className="text-content animate-content">
-                        <h2 className="text-6xl font-bold mb-4">Learn From The Best</h2>
+                        <h2 className="text-6xl font-bold mb-4">Join the community</h2>
                         <p className="text-xl max-w-2xl mb-8">
-                            Our world-class experts are here to guide you every step of the way. Master new skills with personalized feedback.
+                            Be a part of the SHYN community. Connect with experts, share your journey, and grow together.
                         </p>
                         <button className="cta-button">
-                            <span>Meet the Experts</span>
+                            <span>SHYN Community</span>
                             <ArrowRight size={20} />
                         </button>
                         

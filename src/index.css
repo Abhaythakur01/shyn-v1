@@ -16,49 +16,7 @@ a, button, input, [role="button"] {
   cursor: none;
 }
 
-/*
-==============================================
-Minimal Elegant Scrollbar v5.0 – Thumb Only on Scroll
-==============================================
-*/
 
-/* --- WebKit Browsers (Chrome, Safari, Edge) --- */
-::-webkit-scrollbar {
-  width: 12px;
-  background: transparent;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent !important;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgba(168, 85, 247, 0); /* Initially invisible */
-  border-radius: 10px;
-  border: 3px solid transparent;
-  background-clip: content-box;
-  transition: background-color 0.3s ease-in-out;
-  opacity: 0;
-}
-
-/* Show thumb while scrolling */
-body.scrolling::-webkit-scrollbar-thumb {
-  background-color: rgba(168, 85, 247, 0.7); /* Purple */
-  opacity: 1;
-}
-
-/* --- Firefox --- */
-html {
-  scrollbar-width: none; /* Hide scrollbar by default */
-}
-
-/* Show thumb in Firefox while scrolling (partial support) */
-@supports (-moz-appearance: none) {
-  html.scrolling {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(168, 85, 247, 0.7) transparent;
-  }
-}
 
 
 

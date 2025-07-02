@@ -4,7 +4,7 @@ import HorizontalScrollSection from '../components/HorizontalScrollSection';
 import ThreeDScrollSection from '../components/ThreeDScrollSection';
 import MembershipSection from '../components/MembershipSection';
 import ExpertsSection from '../components/ExpertsSection';
-import Footer from '../components/Footer';
+
 import WhoAreYouSection from '../components/WhoAreYouSection';
 
 
@@ -17,7 +17,7 @@ const HomePage: React.FC = () => {
       <WhoAreYouSection />
       <MembershipSection />
       <ExpertsSection />
-      <Footer />
+   
     </div>
   );
 };
