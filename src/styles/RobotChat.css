@@ -1,0 +1,85 @@
+.robot-chat-container {
+  position: absolute;
+  bottom: 2rem;
+  left: 12rem; /* shifted more to the right */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 10;
+  animation: bob 2.5s ease-in-out infinite;
+}
+
+.robot-chat-bubble {
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 1.2rem 1.8rem; /* slightly bigger padding */
+  border-radius: 24px;
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem; /* slightly larger text */
+  max-width: 300px; /* wider bubble */
+  text-align: left;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  position: relative;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.2); /* subtle default border */
+  word-wrap: break-word;    /* ensure long words wrap */
+  overflow-wrap: break-word;
+  word-break: break-word;   /* force break if too long */
+}
+
+
+/* speech tail stays default black */
+.robot-chat-bubble::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 12px solid rgba(0, 0, 0, 0.85);
+}
+
+/* on hover */
+.robot-chat-bubble:hover {
+  background: linear-gradient(to right, #a855f7, #d946ef);
+  border-color: transparent; /* remove border on hover for clean color flow */
+}
+
+.robot-chat-bubble:hover::after {
+  border-bottom-color: #a855f7;
+}
+
+.robot-chat-container input {
+  padding: 0.6rem 1.2rem;
+  border-radius: 9999px;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  box-shadow: 0 3px 12px rgba(168, 85, 247, 0.2);
+}
+.robot-chat-container input:focus {
+  box-shadow: 0 5px 20px rgba(168, 85, 247, 0.4);
+}
+
+@media (max-width: 768px) {
+  .robot-chat-container {
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+  }
+}
+
+.blinking-cursor {
+  display: inline-block;
+  margin-left: 2px;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+

@@ -493,22 +493,14 @@ NEW: Embla Carousel Styles
 
 
 
-/*
-==============================================
-Advanced 3D Pinned Scroll Section (v3 - Final)
-==============================================
-*/
+/* ================================
+Advanced 3D Pinned Scroll Section
+================================ */
 .three-d-scroll-section {
   position: relative;
   width: 100%;
-  /* THIS IS THE FIX:
-    The height is set to 300vh (3 times the viewport height).
-    This creates the necessary "scroll runway" for the GSAP animation to play out smoothly
-    without leaving a massive blank space like 600vh did.
-    This value provides enough space for the 6 cards to transition.
-  */
-  height: 300vh; 
-  background-color: #000000;
+  height: auto;
+  background-color: #000;
   overflow: hidden;
 }
 
@@ -517,7 +509,7 @@ Advanced 3D Pinned Scroll Section (v3 - Final)
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.3;
+  opacity: 0.2;
   z-index: 0;
   background-image: radial-gradient(circle, #a855f7 1px, transparent 1px);
   background-size: 25px 25px;
@@ -528,49 +520,45 @@ Advanced 3D Pinned Scroll Section (v3 - Final)
   top: 0;
   width: 100%;
   height: 100vh;
-  overflow: hidden;
   display: grid;
-  /* A 40/60 split to give content more space */
-  grid-template-columns: 40% 60%; 
+  grid-template-columns: 40% 60%;
   align-items: center;
+  overflow: hidden;
 }
 
-/* NEW: Thematic Guiding Line */
+/* Guiding line unchanged */
 .guiding-line-container {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0; /* Aligned to the left of the content area */
+  left: 0;
   width: 2px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  z-index: 3;
+  z-index: 5;
 }
-
 .guiding-line {
   width: 100%;
   height: 100%;
   background: linear-gradient(to bottom, transparent, #a855f7, transparent);
 }
-
 .guiding-line-dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background-color: #4a2c2a;
   border: 2px solid #a855f7;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  flex-shrink: 0;
+  transition: background-color 0.3s, transform 0.3s;
 }
-
 .guiding-line-dot.active {
   background-color: #d946ef;
   transform: scale(1.5);
   box-shadow: 0 0 15px #d946ef;
 }
 
+/* 3D canvas remains intact on left */
 .three-d-canvas-container {
   grid-column: 1 / 2;
   grid-row: 1 / 2;
@@ -578,92 +566,101 @@ Advanced 3D Pinned Scroll Section (v3 - Final)
   width: 100%;
   height: 100%;
   z-index: 1;
-  /* Initial state is now controlled by GSAP */
 }
-
 .three-d-canvas-container > div {
   width: 100% !important;
   height: 100% !important;
 }
 
+/* ================================
+Hero Slide Cards on Right
+================================ */
 .three-d-content-container {
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   position: relative;
-  z-index: 2;
+  z-index: 3;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 1500px; 
-}
-
-/* Add these new rules to your index.css file */
-
-.content-card-3d {
-  /* ... (keep existing styles) ... */
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem; /* Adjust padding for new content */
-}
-
-.card-image-container {
   width: 100%;
-  aspect-ratio: 16 / 10;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 1.5rem;
 }
 
-.card-image {
+/* stack all cards on top of each other */
+.content-card-3d {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(30px);
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+
+/* full background image fill */
+.card-bg-image {
+  position: absolute;
+  top: 0; left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  will-change: clip-path, transform, opacity;
+  z-index: 1;
 }
 
-.content-card-3d:hover .card-image {
-  transform: scale(1.05);
+/* gradient overlay for legibility */
+.overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 20%, transparent 80%);
+  z-index: 2;
 }
 
-.card-text-content {
-  padding: 0 0.5rem 0.5rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+/* text overlay on image bottom-left */
+.card-overlay-text {
+  position: relative;
+  z-index: 3;
+  color: white;
+  padding: 2rem 3rem;
+  max-width: 80%;
 }
-
-.content-card-description {
-  flex-grow: 1;
-  margin-bottom: 1.5rem;
+.card-overlay-text h3 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
 }
-
+.card-overlay-text p {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  color: #d1d5db;
+}
 .card-explore-button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.85rem 1.8rem;
   background-image: linear-gradient(to right, #a855f7, #d946ef);
   border-radius: 9999px;
   font-weight: 600;
   color: white;
   transition: all 0.3s ease;
-  align-self: flex-start; /* Align button to the left */
 }
 .card-explore-button:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3);
+  box-shadow: 0 8px 20px rgba(168,85,247,0.3);
 }
-/* --- Responsive Adjustments --- */
+
+/* ================================
+Mobile Optimization
+================================ */
 @media (max-width: 768px) {
   .three-d-sticky-container {
     grid-template-columns: 1fr;
   }
   .guiding-line-container {
-    display: none; /* Hide guiding line on mobile */
+    display: none;
   }
   .three-d-canvas-container {
-    opacity: 0.15 !important;
+    display: none;
   }
   .three-d-content-container {
     grid-column: 1 / 2;
@@ -671,12 +668,25 @@ Advanced 3D Pinned Scroll Section (v3 - Final)
   }
   .content-card-3d {
     position: relative;
-    transform: none !important;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: flex-end;
     opacity: 1 !important;
-    visibility: visible !important;
-    margin-bottom: 2rem;
+    transform: none !important;
+  }
+  .card-overlay-text {
+    padding: 1.5rem;
+    text-align: left;
+  }
+  .card-overlay-text h3 {
+    font-size: 2rem;
+  }
+  .card-overlay-text p {
+    font-size: 1rem;
   }
 }
+
+
 
 
 /*
