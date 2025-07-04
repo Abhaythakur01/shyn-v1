@@ -5,7 +5,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Compass, Users, Layers, ShieldCheck, Award, Rocket, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useDeviceDetection } from '../utils/deviceDetection';
 import RobotChat from './RobotChat';
-import { cn } from '../lib/utils';
 const Spline = React.lazy(() => import('@splinetool/react-spline'));
 
 gsap.registerPlugin(ScrollTrigger);
@@ -92,17 +91,15 @@ const ThreeDScrollSection: React.FC = () => {
           {contentData.map((item, index) => (
             <div 
               key={index} 
-              className={cn(
-                "content-card-3d",
-                // On mobile, control visibility with opacity based on activeIndex
-                // On desktop, GSAP will control this, so we leave them semi-transparent initially
-                isMobile
-                  ? [
-                      index === activeIndex ? 'opacity-100 z-10' : 'opacity-0 z-0',
-                      'transition-opacity duration-700 ease-in-out'
-                    ].join(' ')
-                  : ''
-              )}
+              className="content-card-3d"
+              // --- FIX: Using inline styles for robust visibility control on mobile ---
+              style={isMobile ? {
+                opacity: index === activeIndex ? 1 : 0,
+                zIndex: index === activeIndex ? 10 : 0,
+                transition: 'opacity 0.5s ease-in-out',
+                // Keep transform Y at 0 for mobile to prevent it from being pushed down
+                transform: 'translateY(0)',
+              } : {}}
             >
               <img src={item.image} alt={item.title} className="card-bg-image" />
               <div className="overlay-gradient"></div>
@@ -123,10 +120,10 @@ const ThreeDScrollSection: React.FC = () => {
         {/* Mobile Navigation Buttons */}
         {isMobile && (
           <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 items-center gap-4">
-            <button onClick={handlePrev} className="rounded-full bg-white/10 p-3 backdrop-blur-sm transition-colors hover:bg-white/20">
+            <button onClick={handlePrev} className="rounded-full bg-white/10 p-3 backdrop-blur-sm transition-colors hover:bg-white/20 active:bg-white/30">
               <ArrowLeft className="text-white" size={20} />
             </button>
-            <button onClick={handleNext} className="rounded-full bg-white/10 p-3 backdrop-blur-sm transition-colors hover:bg-white/20">
+            <button onClick={handleNext} className="rounded-full bg-white/10 p-3 backdrop-blur-sm transition-colors hover:bg-white/20 active:bg-white/30">
               <ArrowRight className="text-white" size={20} />
             </button>
           </div>
