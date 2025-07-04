@@ -53,7 +53,10 @@ const HowItWorksSection: React.FC = () => {
           {/* Left Column: 2x2 Grid of Step Cards */}
           <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {steps.map((step) => (
-              <div key={step.title} className="step-card bg-gray-900/50 p-6 rounded-2xl border border-gray-800 transition-all duration-300 hover:border-purple-500/40 hover:-translate-y-1">
+              <div 
+                key={step.title} 
+                className="step-card bg-gray-900/50 p-6 rounded-2xl border border-gray-800 transition-all duration-300 hover:border-purple-500/40 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/10"
+              >
                 <div className="flex items-center justify-center h-14 w-14 rounded-full bg-gray-800/80 mb-4">
                   {step.icon}
                 </div>
