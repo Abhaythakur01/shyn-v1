@@ -64,7 +64,18 @@ const ProfileDropdown: React.FC = () => {
     await signOut();
   };
 
-  const menuItems = {
+  type MenuItem = {
+    icon: React.ComponentType<any>;
+    label: string;
+    href: string;
+    badge?: number;
+  };
+
+  const menuItems: {
+    primary: MenuItem[];
+    enhanced: MenuItem[];
+    support: MenuItem[];
+  } = {
     primary: [
       { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
       { icon: User, label: 'Your Profile', href: '/profile' },
