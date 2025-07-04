@@ -4,8 +4,11 @@ import HorizontalScrollSection from '../components/HorizontalScrollSection';
 import ThreeDScrollSection from '../components/ThreeDScrollSection';
 import MembershipSection from '../components/MembershipSection';
 import ExpertsSection from '../components/ExpertsSection';
-
+import BlogPreviewSection from '../components/BlogPreviewSection';
+import HowItWorksSection from '../components/HowItWorksSection';
 import WhoAreYouSection from '../components/WhoAreYouSection';
+import TestimonialsSection from '../components/TestimonialsSection';
+import FaqSection from '../components/FaqSection';
 
 
 const HomePage: React.FC = () => {
@@ -15,9 +18,12 @@ const HomePage: React.FC = () => {
       <HorizontalScrollSection />
       <ThreeDScrollSection />
       <WhoAreYouSection />
-      <MembershipSection />
+      <HowItWorksSection />
+      <BlogPreviewSection />
       <ExpertsSection />
-   
+      <TestimonialsSection /> {/* Add the new section here */}
+      <MembershipSection />
+      <FaqSection />
     </div>
   );
 };

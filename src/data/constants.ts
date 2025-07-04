@@ -1,4 +1,4 @@
-import { ArtForm, Expert, MembershipPlan, BlogPost } from '../types';
+import { ArtForm, Expert, MembershipPlan, BlogPost, Testimonial, FaqItem } from '../types';
 
 export const artForms: ArtForm[] = [
   {
@@ -190,5 +190,80 @@ export const blogPosts: BlogPost[] = [
     author: 'Maria Garcia',
     date: '2024-01-10',
     readTime: '10 min read'
+  }
+];
+
+export const testimonials: Testimonial[] = [
+  {
+    id: '1',
+    quote: 'SHYN transformed my hobby into a passion. The one-on-one sessions with experts were a game-changer for my painting skills.',
+    authorName: 'Jessica Miller',
+    authorTitle: 'Abstract Artist',
+    avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400',
+  },
+  {
+    id: '2',
+    quote: 'The community here is incredibly supportive. I found collaborators for my new music project and got the confidence to perform live.',
+    authorName: 'Michael Chen',
+    authorTitle: 'Singer & Songwriter',
+    avatar: 'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=400',
+  },
+  {
+    id: '3',
+    quote: "I always wanted to try stand-up, but had no idea where to start. SHYN's structured courses gave me the tools and the stage time I needed.",
+    authorName: 'Sarah Goldstein',
+    authorTitle: 'Stand-up Comedian',
+    avatar: 'https://images.pexels.com/photos/1065084/pexels-photo-1065084.jpeg?auto=compress&cs=tinysrgb&w=400',
+  },
+  {
+    id: '4',
+    quote: "The portfolio feature is amazing. It allowed me to create a professional-looking site to showcase my photography with just a few clicks.",
+    authorName: 'David Lee',
+    authorTitle: 'Photographer',
+    avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400',
+  },
+  {
+    id: '5',
+    quote: "The workshops are top-tier. Learning directly from industry leaders has given me insights I couldn't get anywhere else.",
+    authorName: 'Maria Garcia',
+    authorTitle: 'Digital Illustrator',
+    avatar: 'https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=400',
+  },
+  {
+    id: '6',
+    quote: "As a writer, the feedback from the community and mentors on my poetry has been invaluable. SHYN helped me find my voice.",
+    authorName: 'Chris Evans',
+    authorTitle: 'Poet & Writer',
+    avatar: 'https://images.pexels.com/photos/842980/pexels-photo-842980.jpeg?auto=compress&cs=tinysrgb&w=400',
+  },
+  {
+    id: '7',
+    quote: "From beat-making to lyricism, the rap course covered everything. The platform gave me the confidence to release my first EP.",
+    authorName: 'Aisha Ahmed',
+    authorTitle: 'Music Producer & MC',
+    avatar: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=400',
+  },
+];
+
+export const faqItems: FaqItem[] = [
+  {
+    id: '1',
+    question: "What if I'm a complete beginner?",
+    answer: "SHYN is designed for all skill levels! Our basic courses are perfect for beginners, and our community and experts are here to guide you every step of the way. You'll never feel lost."
+  },
+  {
+    id: '2',
+    question: 'Can I cancel my membership anytime?',
+    answer: 'Yes, absolutely. You can cancel your membership at any time directly from your account settings. There are no long-term contracts or hidden fees.'
+  },
+  {
+    id: '3',
+    question: 'How are the experts selected?',
+    answer: 'Our experts are hand-picked based on their professional experience, teaching ability, and passion for their art form. Each one is a leader in their field, dedicated to helping you grow.'
+  },
+  {
+    id: '4',
+    question: 'What kind of support can I expect?',
+    answer: "You'll have access to community forums, priority email support with our Mastermind plan, and direct 1-on-1 sessions with experts depending on your chosen membership level."
   }
 ];

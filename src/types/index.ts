@@ -73,3 +73,17 @@ export interface ArtFormContent {
     buttonText: string;
   };
 }
+
+export interface Testimonial {
+  id: string;
+  quote: string;
+  authorName: string;
+  authorTitle: string;
+  avatar: string;
+}
+
+export interface FaqItem {
+  id: string;
+  question: string;
+  answer: string;
+}

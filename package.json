@@ -10,18 +10,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.3",
     "@react-three/drei": "^10.3.0",
     "@react-three/fiber": "^9.1.4",
     "@splinetool/react-spline": "^4.0.0",
     "@splinetool/runtime": "^1.10.16",
     "@supabase/supabase-js": "^2.38.4",
     "@types/three": "^0.177.0",
+    "class-variance-authority": "^0.7.1",
     "embla-carousel-react": "^8.6.0",
-    "framer-motion": "^12.20.1",
+    "framer-motion": "^12.23.0",
     "gsap": "^3.12.2",
     "lucide-react": "^0.525.0",
+    "motion": "^12.23.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-fast-marquee": "^1.6.5",
     "react-router-dom": "^6.26.1",
     "three": "^0.177.0"
   },

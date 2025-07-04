@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence } from 'framer-motion';
 
 // Styles
-import './styles/scrollbar.css'; // 👈 Make sure this file exists
+import './styles/scrollbar.css';
 
-//components
+// Components
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
@@ -60,8 +60,11 @@ const PageRoutes: React.FC = () => {
   );
 };
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
+  const location = useLocation();
   const showDesktopEnhancements = !isMobileDevice();
+
+  const shouldShowMouseTrail = showDesktopEnhancements && location.pathname !== '/membership';
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -74,7 +77,7 @@ const App: React.FC = () => {
       timeout = setTimeout(() => {
         document.body.classList.remove('scrolling');
         document.documentElement.classList.remove('scrolling');
-      }, 500); // Timeout to hide thumb
+      }, 500);
     };
 
     window.addEventListener('scroll', onScroll);
@@ -82,18 +85,23 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <Router>
-      {showDesktopEnhancements && (
-        <>
-          <CustomCursor />
-          <MouseTrail />
-        </>
-      )}
+    <>
+      {showDesktopEnhancements && <CustomCursor />}
+      {shouldShowMouseTrail && <MouseTrail />}
+      
       <Header />
       <main>
         <PageRoutes />
       </main>
       <Footer />
+    </>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 };

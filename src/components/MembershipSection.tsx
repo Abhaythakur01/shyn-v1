@@ -1,88 +1,93 @@
+// src/pages/MembershipPage.tsx
 import React from 'react';
-import { Check, Star } from 'lucide-react';
-import { useScrollAnimation, useStaggerAnimation } from '../hooks/useScrollAnimation';
-import { membershipPlans } from '../data/constants';
+import { Boxes } from '../components/ui/background-boxes';
+import { cn } from '../lib/utils';
+import { Camera, Users, Award, Mic } from 'lucide-react';
 
-const MembershipSection: React.FC = () => {
-  const sectionRef = useScrollAnimation();
-  const cardsRef = useStaggerAnimation('.membership-card');
+const MembershipPage: React.FC = () => {
+  const features = [
+    {
+      icon: <Award size={20} className="text-purple-400" />,
+      text: "Receive free, expert guidance for your content creation journey.",
+    },
+    {
+      icon: <Camera size={20} className="text-pink-400" />,
+      text: "Get exclusive discounts when recording and editing your next video with us.",
+    },
+    {
+      icon: <Users size={20} className="text-sky-400" />,
+      text: "Attend workshops hosted by well-known industry faces and creative leaders.",
+    },
+    {
+      icon: <Mic size={20} className="text-green-400" />,
+      text: "Discuss your content with experts and get personalized feedback to enhance its quality.",
+    },
+  ];
 
+  const images = [
+    "https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1587593202952-328602e1c073?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  ];
+
+  // HIGHLIGHT: Added id="membership" to the root div
   return (
-    <section id="membership" ref={sectionRef} className="py-24 bg-gray-900 relative">
-      {/* Seamless gradient transition */}
-      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-gray-800 to-transparent pointer-events-none"></div>
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none"></div>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-20">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            SHYN <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">with Us</span>
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Choose the perfect plan to unlock your creative potential and join a community of passionate artists
-          </p>
-        </div>
+    <div id="membership" className="min-h-screen w-full overflow-hidden bg-black">
+      <div className="relative flex h-full w-full items-center justify-center py-24">
+        <div className="absolute inset-0 h-full w-full bg-black z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
+        <Boxes />
 
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {membershipPlans.map((plan) => (
-            <div 
-              key={plan.id}
-              className={`membership-card relative bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-gray-700/50 ${
-                plan.recommended ? 'ring-2 ring-purple-500/50 scale-105 shadow-purple-500/20' : 'hover:border-purple-500/30'
-              }`}
-            >
-              {plan.recommended && (
-                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-3 rounded-full text-sm font-bold flex items-center space-x-2 shadow-xl">
-                    <Star size={16} fill="currentColor" />
-                    <span>Most Popular</span>
+        <div className={cn("relative z-20 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8")}>
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+            {/* Left Column: Content */}
+            <div className="text-left">
+              <h1 className="text-5xl font-bold tracking-tighter text-white sm:text-6xl md:text-7xl">
+                SHYN{' '}
+                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  with Us
+                </span>
+              </h1>
+              <p className="mt-6 max-w-xl text-lg text-slate-300 md:text-xl">
+                Unlock your creative potential. Our membership is more than a service; it's a partnership dedicated to helping you shine.
+              </p>
+
+              <div className="mt-8 space-y-4">
+                {features.map((feature, index) => (
+                  <div key={index} className="flex items-start space-x-3">
+                    <div className="flex-shrink-0">{feature.icon}</div>
+                    <p className="text-slate-300">{feature.text}</p>
                   </div>
-                </div>
-              )}
-
-              <div className="p-10">
-                <div className="text-center mb-10">
-                  <h3 className="text-3xl font-bold text-white mb-4">{plan.name}</h3>
-                  <div className="flex items-center justify-center mb-6">
-                    <span className="text-5xl font-bold text-white">${plan.price}</span>
-                    <span className="text-gray-400 ml-3 text-lg">/month</span>
-                  </div>
-                </div>
-
-                <ul className="space-y-5 mb-10">
-                  {plan.features.map((feature, index) => (
-                    <li key={index} className="flex items-start space-x-4">
-                      <Check size={20} className="text-green-400 mt-1 flex-shrink-0" />
-                      <span className="text-gray-300 leading-relaxed">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <button 
-                  className={`w-full py-4 rounded-2xl font-semibold transition-all duration-300 text-lg ${
-                    plan.recommended
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 shadow-xl hover:shadow-2xl hover:scale-105'
-                      : 'bg-gray-700/80 text-white hover:bg-gray-600 border border-gray-600/50 hover:border-purple-500/50 backdrop-blur-sm'
-                  }`}
-                >
-                  {plan.recommended ? 'Get Started' : 'Choose Plan'}
-                </button>
+                ))}
               </div>
-            </div>
-          ))}
-        </div>
 
-        <div className="text-center mt-16">
-          <p className="text-gray-300 mb-6 text-lg">
-            Not sure which plan is right for you?
-          </p>
-          <button className="px-8 py-3 border-2 border-purple-500/50 text-purple-400 rounded-full font-semibold hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all duration-300 backdrop-blur-sm">
-            Compare All Features
-          </button>
+              <button className="mt-10 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition-transform duration-200 hover:scale-105">
+                Become a Member
+              </button>
+            </div>
+
+            {/* Right Column: Image Gallery */}
+            <div className="relative hidden h-[500px] w-full lg:block">
+              <img
+                src={images[0]}
+                alt="Workshop with artists"
+                className="absolute left-0 top-0 h-2/3 w-2/3 rounded-2xl object-cover shadow-2xl transition-transform duration-300 hover:rotate-[-3deg] hover:scale-105"
+              />
+              <img
+                src={images[1]}
+                alt="Creative collaboration meeting"
+                className="absolute bottom-0 right-0 h-1/2 w-3/5 rounded-2xl object-cover shadow-2xl transition-transform duration-300 hover:rotate-[2deg] hover:scale-105"
+              />
+               <img
+                src={images[2]}
+                alt="Video editing suite"
+                className="absolute left-1/4 top-1/2 h-auto w-1/2 rounded-2xl object-cover shadow-2xl transition-transform duration-300 hover:rotate-[5deg] hover:scale-110"
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default MembershipSection;
+export default MembershipPage;
