@@ -3,6 +3,7 @@ import React from 'react';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useScrollAnimation';
 import { Compass, Users, Sparkles, TrendingUp } from 'lucide-react';
 import CursorDancingBars from './CursorDancingBars';
+import { useDeviceDetection } from '../utils/deviceDetection'; // Import the device detection hook
 
 const steps = [
   {
@@ -30,6 +31,7 @@ const steps = [
 const HowItWorksSection: React.FC = () => {
   const sectionRef = useScrollAnimation();
   const cardsRef = useStaggerAnimation('.step-card');
+  const { isMobile } = useDeviceDetection(); // Check if the device is mobile
 
   return (
     <section ref={sectionRef} className="py-24 bg-black text-white overflow-hidden">
@@ -45,16 +47,13 @@ const HowItWorksSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Two-column layout for cards and canvas */}
+        {/* The main grid now adapts based on whether the canvas is present */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
           {/* Left Column: 2x2 Grid of Step Cards */}
           <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {steps.map((step) => (
-              <div 
-                key={step.title} 
-                className="step-card bg-gray-900/50 p-6 rounded-2xl border border-gray-800 transition-all duration-300 hover:border-purple-500/40 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/10"
-              >
+              <div key={step.title} className="step-card bg-gray-900/50 p-6 rounded-2xl border border-gray-800 transition-all duration-300 hover:border-purple-500/40 hover:-translate-y-1">
                 <div className="flex items-center justify-center h-14 w-14 rounded-full bg-gray-800/80 mb-4">
                   {step.icon}
                 </div>
@@ -64,10 +63,12 @@ const HowItWorksSection: React.FC = () => {
             ))}
           </div>
 
-          {/* Right Column: Interactive Canvas */}
-          <div className="flex justify-center lg:justify-end">
-            <CursorDancingBars />
-          </div>
+          {/* Right Column: Interactive Canvas (Only rendered on non-mobile devices) */}
+          {!isMobile && (
+            <div className="flex justify-center lg:justify-end">
+              <CursorDancingBars />
+            </div>
+          )}
 
         </div>
       </div>
