@@ -1,4 +1,3 @@
-// src/components/BlogPreviewSection.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { blogPosts } from '../data/constants';
@@ -9,34 +8,33 @@ const BlogPreviewSection: React.FC = () => {
   const sectionRef = useScrollAnimation();
   const cardsRef = useStaggerAnimation('.blog-card');
   
-  // We'll show the 3 most recent posts available in constants.ts
   const postsToShow = blogPosts.slice(0, 3);
 
   return (
-    <div ref={sectionRef} className="bg-gray-900 text-white py-24">
+    <div ref={sectionRef} className="bg-gray-900 text-white py-20 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl md:text-6xl font-bold mb-4">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-4xl md:text-6xl font-bold mb-4">
             From the <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">SHYN</span> Journal
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
             Insights, inspiration, and stories from the world of art and creativity.
           </p>
         </div>
 
         <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {postsToShow.map((post) => (
-            <div key={post.id} className="blog-card bg-gray-800/80 backdrop-blur-sm rounded-3xl shadow-lg overflow-hidden group transform hover:scale-105 transition-all duration-300 border border-gray-700/50 hover:border-purple-500/30">
+            <div key={post.id} className="blog-card bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden group transition-all duration-300 border border-gray-700/50">
               <Link to={`/blog/${post.id}`} className="block h-full flex flex-col">
                 <div className="relative">
                   <img src={post.image} alt={post.title} className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
-                  <h3 className="text-xl font-bold mb-3 group-hover:text-purple-400 transition-colors duration-300 h-14">
+                  <h3 className="text-xl font-semibold mb-3 group-hover:text-purple-400 transition-colors duration-300">
                     {post.title}
                   </h3>
-                  <p className="text-gray-400 text-sm mb-4 h-20 overflow-hidden text-ellipsis">
+                  <p className="text-gray-400 text-sm mb-4 flex-grow">
                     {post.excerpt}
                   </p>
                   <div className="flex items-center justify-between text-gray-500 text-xs font-medium mt-auto">
@@ -60,7 +58,7 @@ const BlogPreviewSection: React.FC = () => {
             </div>
           ))}
         </div>
-        <div className="text-center mt-16">
+        <div className="text-center mt-12 md:mt-16">
             <Link to="/blogs" className="px-8 py-3 border-2 border-purple-500/50 text-purple-400 rounded-full font-semibold hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all duration-300 backdrop-blur-sm">
                 View All Articles
             </Link>

@@ -1,4 +1,3 @@
-// src/components/FaqSection.tsx
 import React, { useState } from 'react';
 import { faqItems } from '../data/constants';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
@@ -13,13 +12,13 @@ const FaqSection: React.FC = () => {
   };
 
   return (
-    <section ref={sectionRef} className="py-24 bg-black">
+    <section ref={sectionRef} className="py-20 md:py-24 bg-black">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4">
             Have Questions?
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
             We've got answers. Here are some of the most common questions we get from our community.
           </p>
         </div>
@@ -29,9 +28,9 @@ const FaqSection: React.FC = () => {
             <div key={faq.id} className="bg-gray-900/50 border border-gray-800 rounded-2xl overflow-hidden">
               <button
                 onClick={() => toggleFaq(index)}
-                className="w-full flex justify-between items-center text-left p-6"
+                className="w-full flex justify-between items-center text-left p-4 md:p-6"
               >
-                <span className="text-lg font-semibold text-white">{faq.question}</span>
+                <span className="text-base md:text-lg font-semibold text-white">{faq.question}</span>
                 <ChevronDown
                   className={`text-purple-400 transform transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}
                   size={24}
@@ -40,7 +39,7 @@ const FaqSection: React.FC = () => {
               <div
                 className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? 'max-h-96' : 'max-h-0'}`}
               >
-                <div className="p-6 pt-0">
+                <div className="p-4 md:p-6 pt-0">
                   <p className="text-gray-300 leading-relaxed">{faq.answer}</p>
                 </div>
               </div>

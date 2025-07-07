@@ -1,10 +1,12 @@
-// src/pages/MembershipPage.tsx
 import React from 'react';
 import { Boxes } from '../components/ui/background-boxes';
 import { cn } from '../lib/utils';
 import { Camera, Users, Award, Mic } from 'lucide-react';
+import { useDeviceDetection } from '../utils/deviceDetection'; // Make sure this hook is available
 
-const MembershipPage: React.FC = () => {
+const MembershipSection: React.FC = () => {
+  const { isMobile } = useDeviceDetection();
+
   const features = [
     {
       icon: <Award size={20} className="text-purple-400" />,
@@ -30,43 +32,47 @@ const MembershipPage: React.FC = () => {
     "https://images.unsplash.com/photo-1587593202952-328602e1c073?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   ];
 
-  // HIGHLIGHT: Added id="membership" to the root div
   return (
-    <div id="membership" className="min-h-screen w-full overflow-hidden bg-black">
-      <div className="relative flex h-full w-full items-center justify-center py-24">
-        <div className="absolute inset-0 h-full w-full bg-black z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
-        <Boxes />
+    <div id="membership" className="min-h-screen w-full overflow-hidden bg-black py-20 md:py-24">
+      <div className="relative flex h-full w-full items-center justify-center">
+        {/* Conditionally render the heavy Boxes component */}
+        {!isMobile && (
+          <>
+            <div className="absolute inset-0 h-full w-full bg-black z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
+            <Boxes />
+          </>
+        )}
 
         <div className={cn("relative z-20 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8")}>
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             {/* Left Column: Content */}
-            <div className="text-left">
-              <h1 className="text-5xl font-bold tracking-tighter text-white sm:text-6xl md:text-7xl">
+            <div className="text-center lg:text-left">
+              <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
                 SHYN{' '}
                 <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                   with Us
                 </span>
               </h1>
-              <p className="mt-6 max-w-xl text-lg text-slate-300 md:text-xl">
+              <p className="mt-4 max-w-xl text-lg text-slate-300 md:text-xl mx-auto lg:mx-0">
                 Unlock your creative potential. Our membership is more than a service; it's a partnership dedicated to helping you shine.
               </p>
 
-              <div className="mt-8 space-y-4">
+              <div className="mt-8 space-y-4 text-left">
                 {features.map((feature, index) => (
                   <div key={index} className="flex items-start space-x-3">
-                    <div className="flex-shrink-0">{feature.icon}</div>
+                    <div className="flex-shrink-0 mt-1">{feature.icon}</div>
                     <p className="text-slate-300">{feature.text}</p>
                   </div>
                 ))}
               </div>
 
-              <button className="mt-10 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition-transform duration-200 hover:scale-105">
+              <button className="mt-10 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-3 text-base font-semibold text-white shadow-lg transition-transform duration-200 hover:scale-105">
                 Become a Member
               </button>
             </div>
 
-            {/* Right Column: Image Gallery */}
-            <div className="relative hidden h-[500px] w-full lg:block">
+            {/* Right Column: Image Gallery (Fallback for mobile) */}
+            <div className="relative w-full h-80 lg:h-[500px]">
               <img
                 src={images[0]}
                 alt="Workshop with artists"
@@ -90,4 +96,4 @@ const MembershipPage: React.FC = () => {
   );
 };
 
-export default MembershipPage;
+export default MembershipSection;
