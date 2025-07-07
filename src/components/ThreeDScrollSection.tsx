@@ -22,10 +22,8 @@ const ThreeDScrollSection: React.FC = () => {
   const sectionRef = useRef(null);
   const { isMobile } = useDeviceDetection();
   
-  // State for mobile carousel
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // GSAP animation for desktop only
   useLayoutEffect(() => {
     if (isMobile) return;
 
@@ -65,7 +63,6 @@ const ThreeDScrollSection: React.FC = () => {
     return () => ctx.revert();
   }, [isMobile]);
 
-  // Handlers for mobile navigation
   const handleNext = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % contentData.length);
   };
@@ -74,37 +71,70 @@ const ThreeDScrollSection: React.FC = () => {
     setActiveIndex((prevIndex) => (prevIndex - 1 + contentData.length) % contentData.length);
   };
 
+  // Mobile Fallback Section
+  if (isMobile) {
+    return (
+      <section className="bg-black py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-white">How SHYN Works</h2>
+            <p className="text-lg text-gray-400 mt-2">Your journey to creativity, simplified.</p>
+          </div>
+          <div className="relative overflow-hidden">
+            <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
+              {contentData.map((item, index) => (
+                <div key={index} className="w-full flex-shrink-0">
+                  <div className="bg-gray-900 rounded-2xl p-8 text-center">
+                    <div className="flex justify-center mb-4">
+                      <item.icon size={32} className="text-purple-400" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white">{item.title}</h3>
+                    <p className="text-gray-400 mt-2">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex justify-center items-center gap-4 mt-8">
+            <button onClick={handlePrev} className="rounded-full bg-white/10 p-3 backdrop-blur-sm">
+              <ArrowLeft className="text-white" size={20} />
+            </button>
+            <div className="flex gap-2">
+              {contentData.map((_, index) => (
+                <div key={index} className={`w-2 h-2 rounded-full ${index === activeIndex ? 'bg-purple-400' : 'bg-gray-600'}`}></div>
+              ))}
+            </div>
+            <button onClick={handleNext} className="rounded-full bg-white/10 p-3 backdrop-blur-sm">
+              <ArrowRight className="text-white" size={20} />
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Desktop Version
   return (
     <section ref={sectionRef} className="three-d-scroll-section">
       <div className="three-d-sticky-container">
         <div className="background-grid-3d"></div>
 
-        {!isMobile && (
-          <div className="three-d-canvas-container">
-            <Suspense fallback={<div className="text-white">Loading 3D Model...</div>}>
-              <Spline scene="https://prod.spline.design/OYsp6cAhimYDZz5D/scene.splinecode" />
-            </Suspense>
-          </div>
-        )}
+        <div className="three-d-canvas-container">
+          <Suspense fallback={<div className="text-white">Loading 3D Model...</div>}>
+            <Spline scene="https://prod.spline.design/OYsp6cAhimYDZz5D/scene.splinecode" />
+          </Suspense>
+        </div>
 
         <div className="three-d-content-container">
           {contentData.map((item, index) => (
             <div 
               key={index} 
               className="content-card-3d"
-              // --- FIX: Using inline styles for robust visibility control on mobile ---
-              style={isMobile ? {
-                opacity: index === activeIndex ? 1 : 0,
-                zIndex: index === activeIndex ? 10 : 0,
-                transition: 'opacity 0.5s ease-in-out',
-                // Keep transform Y at 0 for mobile to prevent it from being pushed down
-                transform: 'translateY(0)',
-              } : {}}
             >
               <img src={item.image} alt={item.title} className="card-bg-image" />
               <div className="overlay-gradient"></div>
               <div className="card-overlay-text">
-                <item.icon size={32} className="card-icon" />
+                <item.icon size={32} className="text-purple-400 mb-4" />
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
                 <button className="card-explore-button">
@@ -115,19 +145,7 @@ const ThreeDScrollSection: React.FC = () => {
           ))}
         </div>
         
-        {!isMobile && <RobotChat />}
-
-        {/* Mobile Navigation Buttons */}
-        {isMobile && (
-          <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 items-center gap-4">
-            <button onClick={handlePrev} className="rounded-full bg-white/10 p-3 backdrop-blur-sm transition-colors hover:bg-white/20 active:bg-white/30">
-              <ArrowLeft className="text-white" size={20} />
-            </button>
-            <button onClick={handleNext} className="rounded-full bg-white/10 p-3 backdrop-blur-sm transition-colors hover:bg-white/20 active:bg-white/30">
-              <ArrowRight className="text-white" size={20} />
-            </button>
-          </div>
-        )}
+        <RobotChat />
       </div>
     </section>
   );

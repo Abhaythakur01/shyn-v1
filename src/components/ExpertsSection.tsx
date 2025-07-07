@@ -22,7 +22,7 @@ const ExpertsSection: React.FC = () => {
   };
 
   return (
-    <section id="experts" ref={sectionRef} className="py-20 md:py-24 bg-gray-900 relative overflow-hidden">
+    <section id="experts" ref={sectionRef} className="py-20 md:py-24 bg-black relative overflow-hidden">
       {/* Conditionally render heavy background effects */}
       {!isMobile && (
         <>
