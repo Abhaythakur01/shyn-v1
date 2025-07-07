@@ -3,6 +3,7 @@ import React from 'react';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useScrollAnimation';
 import { Compass, Users, Sparkles, TrendingUp } from 'lucide-react';
 import CursorDancingBars from './CursorDancingBars';
+import { useDeviceDetection } from '../utils/deviceDetection';
 
 const steps = [
   {
@@ -27,15 +28,52 @@ const steps = [
   },
 ];
 
-const HowItWorksSection: React.FC = () => {
-  const sectionRef = useScrollAnimation();
-  const cardsRef = useStaggerAnimation('.step-card');
+// ====================================================================
+// NEW: Mobile-Specific Fallback Component
+// This is a simple, stable component with NO animation hooks or heavy canvas elements.
+// ====================================================================
+const MobileHowItWorksFallback: React.FC = () => {
+    return (
+        <section id="how-it-works-mobile" className="py-16 bg-black text-white px-4">
+            <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold leading-tight">
+                    How It Works
+                </h2>
+                <p className="text-lg text-gray-400 mt-3 max-w-md mx-auto">
+                    A clear path to unlocking your creative potential.
+                </p>
+            </div>
+            <div className="grid grid-cols-1 gap-8">
+                {steps.map((step) => (
+                    <div key={step.title} className="text-center">
+                        <div className="flex items-center justify-center h-16 w-16 rounded-full bg-gray-800 mx-auto mb-4">
+                            {step.icon}
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
+                        <p className="text-base text-gray-400 leading-relaxed">{step.description}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+};
 
+// ====================================================================
+// Main Component with Mobile Detection
+// ====================================================================
+const HowItWorksSection: React.FC = () => {
+  const { isMobile } = useDeviceDetection();
+  const sectionRef = useScrollAnimation(); // For desktop
+  const cardsRef = useStaggerAnimation('.step-card'); // For desktop
+
+  if (isMobile) {
+      return <MobileHowItWorksFallback />;
+  }
+
+  // --- Original Desktop View ---
   return (
     <section ref={sectionRef} className="py-24 bg-black text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl font-bold mb-4">
             How It Works
@@ -44,11 +82,7 @@ const HowItWorksSection: React.FC = () => {
             A clear path to unlocking your creative potential is just a few steps away.
           </p>
         </div>
-
-        {/* Main Grid: Responsive */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
-          {/* Left Column: Step Cards */}
           <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {steps.map((step) => (
               <div 
@@ -63,12 +97,9 @@ const HowItWorksSection: React.FC = () => {
               </div>
             ))}
           </div>
-
-          {/* Right Column: Canvas for Desktop Only */}
           <div className="hidden lg:flex justify-center lg:justify-end">
             <CursorDancingBars />
           </div>
-
         </div>
       </div>
     </section>
