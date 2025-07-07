@@ -33,7 +33,7 @@ const MembershipSection: React.FC = () => {
   ];
 
   return (
-    <div id="membership" className="min-h-screen w-full overflow-hidden bg-black py-20 md:py-24">
+    <div id="membership" className="w-full overflow-hidden bg-black py-20 md:py-24">
       <div className="relative flex h-full w-full items-center justify-center">
         {/* Conditionally render the heavy Boxes component */}
         {!isMobile && (

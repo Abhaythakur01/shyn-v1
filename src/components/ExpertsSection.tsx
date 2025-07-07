@@ -13,10 +13,10 @@ const ExpertsSection: React.FC = () => {
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
-      <Star 
-        key={i} 
-        size={16} 
-        className={i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-500'} 
+      <Star
+        key={i}
+        size={16}
+        className={i < Math.floor(rating) ? 'text-yellow-400 fill-current' : 'text-gray-500'}
       />
     ));
   };
@@ -28,7 +28,7 @@ const ExpertsSection: React.FC = () => {
         <>
           <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-gray-900 to-transparent pointer-events-none"></div>
           <div className="absolute inset-0 opacity-10">
-            <div 
+            <div
               className="w-full h-full"
               style={{
                 backgroundImage: `
@@ -55,19 +55,19 @@ const ExpertsSection: React.FC = () => {
 
         <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {experts.map((expert) => (
-            <div 
+            <div
               key={expert.id}
               className="expert-card bg-gray-800/60 backdrop-blur-sm rounded-2xl shadow-lg transition-all duration-300 group cursor-pointer border border-gray-700/50"
             >
               <div className="relative overflow-hidden rounded-t-2xl">
-                <img 
-                  src={expert.image} 
+                <img
+                  src={expert.image}
                   alt={expert.name}
                   className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               </div>
-              
+
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-1">
@@ -75,20 +75,20 @@ const ExpertsSection: React.FC = () => {
                   </div>
                   <span className="text-sm font-semibold text-gray-300 bg-gray-700/50 px-3 py-1 rounded-full">{expert.rating}</span>
                 </div>
-                
+
                 <h3 className="text-lg font-bold text-white mb-2 group-hover:text-purple-400 transition-colors duration-300">
                   {expert.name}
                 </h3>
-                
+
                 <div className="flex items-center space-x-2 mb-3">
                   <Award size={16} className="text-purple-400" />
                   <span className="text-xs font-semibold text-purple-300 bg-purple-500/10 px-2 py-1 rounded-full">{expert.specialty}</span>
                 </div>
-                
+
                 <p className="text-gray-400 text-sm mb-4 line-clamp-3 leading-relaxed">
                   {expert.bio}
                 </p>
-                
+
                 <div className="flex items-center text-sm text-gray-400 bg-gray-700/30 px-3 py-2 rounded-full">
                   <Clock size={14} className="mr-2" />
                   <span>{expert.experience}</span>
