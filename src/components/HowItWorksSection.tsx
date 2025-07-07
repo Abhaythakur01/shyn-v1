@@ -3,7 +3,6 @@ import React from 'react';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useScrollAnimation';
 import { Compass, Users, Sparkles, TrendingUp } from 'lucide-react';
 import CursorDancingBars from './CursorDancingBars';
-import { useDeviceDetection } from '../utils/deviceDetection'; // Import the device detection hook
 
 const steps = [
   {
@@ -31,12 +30,11 @@ const steps = [
 const HowItWorksSection: React.FC = () => {
   const sectionRef = useScrollAnimation();
   const cardsRef = useStaggerAnimation('.step-card');
-  const { isMobile } = useDeviceDetection(); // Check if the device is mobile
 
   return (
     <section ref={sectionRef} className="py-24 bg-black text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl font-bold mb-4">
@@ -47,10 +45,10 @@ const HowItWorksSection: React.FC = () => {
           </p>
         </div>
 
-        {/* The main grid now adapts based on whether the canvas is present */}
+        {/* Main Grid: Responsive */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
-          {/* Left Column: 2x2 Grid of Step Cards */}
+          {/* Left Column: Step Cards */}
           <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {steps.map((step) => (
               <div 
@@ -66,12 +64,10 @@ const HowItWorksSection: React.FC = () => {
             ))}
           </div>
 
-          {/* Right Column: Interactive Canvas (Only rendered on non-mobile devices) */}
-          {!isMobile && (
-            <div className="flex justify-center lg:justify-end">
-              <CursorDancingBars />
-            </div>
-          )}
+          {/* Right Column: Canvas for Desktop Only */}
+          <div className="hidden lg:flex justify-center lg:justify-end">
+            <CursorDancingBars />
+          </div>
 
         </div>
       </div>
