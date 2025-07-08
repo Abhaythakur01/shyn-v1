@@ -33,7 +33,6 @@ const PortfolioPage: React.FC = () => {
         id: videoId,
         thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
       };
-      // Prevent adding duplicate videos
       if (!youtubeLinks.some(link => link.id === newVideo.id)) {
         setYoutubeLinks([newVideo, ...youtubeLinks]);
       }
@@ -42,6 +41,11 @@ const PortfolioPage: React.FC = () => {
     } else {
       setLinkError('Invalid YouTube URL. Please enter a valid link.');
     }
+  };
+
+  // --- NEW: Function to handle deleting a video ---
+  const handleDeleteLink = (idToDelete: string) => {
+    setYoutubeLinks(currentLinks => currentLinks.filter(video => video.id !== idToDelete));
   };
 
   if (!user) {
@@ -76,7 +80,7 @@ const PortfolioPage: React.FC = () => {
             </div>
           </div>
 
-          {/* --- NEW: Add YouTube Link Section --- */}
+          {/* Add YouTube Link Section */}
           <div className="bg-gray-800 rounded-2xl shadow-lg p-5 sm:p-6 mb-8 border border-gray-700">
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <div className="relative flex-grow w-full">
@@ -97,20 +101,30 @@ const PortfolioPage: React.FC = () => {
             {linkError && <p className="text-red-400 text-sm mt-3">{linkError}</p>}
           </div>
           
-          {/* --- NEW: YouTube Videos Grid --- */}
+          {/* YouTube Videos Grid */}
           {youtubeLinks.length > 0 && (
             <div className="mb-12">
                <h2 className="text-2xl font-bold text-white mb-6">Video Showcase</h2>
                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {youtubeLinks.map((video) => (
-                  <div key={video.id} onClick={() => setPlayingVideoId(video.id)} className="bg-gray-800 rounded-2xl shadow-lg overflow-hidden group cursor-pointer transform hover:scale-105 transition-transform duration-300">
+                  <div key={video.id} onClick={() => setPlayingVideoId(video.id)} className="relative bg-gray-800 rounded-2xl shadow-lg overflow-hidden group cursor-pointer transform hover:scale-105 transition-transform duration-300">
+                    {/* --- NEW: Delete Button --- */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevents the video player from opening
+                        handleDeleteLink(video.id);
+                      }}
+                      className="absolute top-2 right-2 z-10 bg-black/50 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 hover:bg-red-500 transition-all duration-200"
+                      aria-label="Delete video"
+                    >
+                      <X size={16} />
+                    </button>
                     <div className="relative aspect-video">
                       <img 
                         src={video.thumbnailUrl} 
                         alt="YouTube Thumbnail" 
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          // Fallback to medium quality thumbnail if max resolution fails
                           e.currentTarget.src = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`;
                         }}
                       />
@@ -176,7 +190,7 @@ const PortfolioPage: React.FC = () => {
         </div>
       </div>
 
-      {/* --- NEW: Video Player Modal --- */}
+      {/* Video Player Modal */}
       <AnimatePresence>
         {playingVideoId && (
           <motion.div
@@ -190,7 +204,7 @@ const PortfolioPage: React.FC = () => {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on the video
+              onClick={(e) => e.stopPropagation()}
               className="relative w-full max-w-4xl aspect-video bg-black rounded-xl shadow-2xl"
             >
               <button onClick={() => setPlayingVideoId(null)} className="absolute -top-3 -right-3 z-10 bg-white text-black rounded-full p-1.5 hover:scale-110 transition-transform">
