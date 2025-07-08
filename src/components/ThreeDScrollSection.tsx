@@ -1,10 +1,10 @@
-// src/components/ThreeDScrollSection.tsx
 import React, { useLayoutEffect, useRef, Suspense, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Compass, Users, Layers, ShieldCheck, Award, Rocket, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useDeviceDetection } from '../utils/deviceDetection';
 import RobotChat from './RobotChat';
+// Lazy load Spline to improve initial page load
 const Spline = React.lazy(() => import('@splinetool/react-spline'));
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,47 +19,51 @@ const contentData = [
 ];
 
 const ThreeDScrollSection: React.FC = () => {
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const { isMobile } = useDeviceDetection();
   
   const [activeIndex, setActiveIndex] = useState(0);
 
   useLayoutEffect(() => {
-    if (isMobile) return;
+    if (isMobile || !sectionRef.current) return;
 
+    // Use a GSAP context for safe cleanup
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray<HTMLElement>('.content-card-3d');
+      
+      // Ensure there are cards to animate
+      if (cards.length === 0) return;
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: `+=${cards.length * 100}%`,
-          scrub: true,
+          end: `+=${cards.length * 100}%`, // Dynamic end based on number of cards
+          scrub: 1,
           pin: true,
           anticipatePin: 1,
         },
       });
 
+      // Animate each card
       cards.forEach((card, i) => {
-        tl.to(card, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'expo.out',
-        });
+        // Fade in the card
+        tl.fromTo(card, 
+          { opacity: 0, y: 50 },
+          { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }
+        );
 
-        if (i !== cards.length - 1) {
-          tl.to(card, {
-            opacity: 0,
-            y: -50,
-            duration: 1,
-            ease: 'expo.in',
-          }, '-=0.5');
+        // If it's not the last card, fade it out to reveal the next one
+        if (i < cards.length - 1) {
+          tl.to(card, 
+            { opacity: 0, y: -50, duration: 1, ease: 'power2.in' },
+            '+=1' // Add a delay before fading out
+          );
         }
       });
     }, sectionRef);
 
+    // Cleanup function to revert animations
     return () => ctx.revert();
   }, [isMobile]);
 
@@ -71,7 +75,7 @@ const ThreeDScrollSection: React.FC = () => {
     setActiveIndex((prevIndex) => (prevIndex - 1 + contentData.length) % contentData.length);
   };
 
-  // Mobile Fallback Section
+  // --- Mobile Fallback Section ---
   if (isMobile) {
     return (
       <section className="bg-black py-20">
@@ -113,24 +117,22 @@ const ThreeDScrollSection: React.FC = () => {
     );
   }
 
-  // Desktop Version
+  // --- Desktop Version ---
   return (
-    <section ref={sectionRef} className="three-d-scroll-section">
+    <section ref={sectionRef} className="three-d-scroll-section h-[500vh]">
       <div className="three-d-sticky-container">
         <div className="background-grid-3d"></div>
 
         <div className="three-d-canvas-container">
-          <Suspense fallback={<div className="text-white">Loading 3D Model...</div>}>
+          {/* Suspense provides a fallback while the 3D model is loading */}
+          <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-white">Loading 3D Model...</div>}>
             <Spline scene="https://prod.spline.design/OYsp6cAhimYDZz5D/scene.splinecode" />
           </Suspense>
         </div>
 
         <div className="three-d-content-container">
           {contentData.map((item, index) => (
-            <div 
-              key={index} 
-              className="content-card-3d"
-            >
+            <div key={index} className="content-card-3d" style={{ zIndex: index + 1 }}>
               <img src={item.image} alt={item.title} className="card-bg-image" />
               <div className="overlay-gradient"></div>
               <div className="card-overlay-text">
