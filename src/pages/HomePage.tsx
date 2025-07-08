@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Hero from '../components/Hero';
 import WhoAreYouSection from '../components/WhoAreYouSection';
 import HowItWorksSection from '../components/HowItWorksSection';
@@ -7,37 +7,52 @@ import ExpertsSection from '../components/ExpertsSection';
 import TestimonialsSection from '../components/TestimonialsSection';
 import MembershipSection from '../components/MembershipSection';
 import FaqSection from '../components/FaqSection';
-
-// Import the original complex sections and the device detection hook
 import HorizontalScrollSection from '../components/HorizontalScrollSection';
 import ThreeDScrollSection from '../components/ThreeDScrollSection';
 import { useDeviceDetection } from '../utils/deviceDetection';
 
-// ====================================================================
-// NEW: Mobile-Specific Fallback Components
-// These are simple, static components that will replace the complex
-// animated sections on mobile devices.
-// ====================================================================
+// --- ADDITIONS: Import authentication tools ---
+import AuthModal from '../components/AuthModal';
+import { useAuth } from '../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
-const MobileHorizontalFallback: React.FC = () => (
-  <div className="bg-black text-white py-16 px-4 space-y-12">
-    <div className="text-center">
-      <h2 className="text-3xl font-bold mb-3">Get Your Video Recorded</h2>
-      <p className="text-gray-400 max-w-md mx-auto mb-6">Explore a universe of creativity and find the path that speaks to you.</p>
-      <button className="bg-purple-600 px-6 py-3 rounded-full font-semibold">Explore Now</button>
+// ====================================================================
+// Mobile Fallback Component - NOW AUTHENTICATION AWARE
+// ====================================================================
+const MobileHorizontalFallback: React.FC<{ onAuthRequest: () => void }> = ({ onAuthRequest }) => {
+  const { user } = useAuth();
+
+  const handlePortfolioClick = () => {
+    if (!user) {
+      onAuthRequest();
+    }
+  };
+
+  return (
+    <div className="bg-black text-white py-16 px-4 space-y-12">
+      <div className="text-center">
+        <h2 className="text-3xl font-bold mb-3">Get Your Video Recorded</h2>
+        <p className="text-gray-400 max-w-md mx-auto mb-6">Explore a universe of creativity and find the path that speaks to you.</p>
+        <Link to="/video-recording-services" className="cta-button inline-block">Explore Now</Link>
+      </div>
+      <div className="text-center">
+        <h2 className="text-3xl font-bold mb-3">Join The Community</h2>
+        <p className="text-gray-400 max-w-md mx-auto mb-6">Connect with experts, share your journey, and grow together.</p>
+        <a href="https://chat.whatsapp.com/IOdJjxp5pbZ7YRYh9wyfTI" target="_blank" rel="noopener noreferrer" className="cta-button inline-block">SHYN Community</a>
+      </div>
+      <div className="text-center">
+        <h2 className="text-3xl font-bold mb-3">Showcase Your Talent</h2>
+        <p className="text-gray-400 max-w-md mx-auto mb-6">Build a stunning portfolio and let your art SHYN.</p>
+        {user ? (
+          <Link to="/portfolio" className="cta-button inline-block">Start Your Portfolio</Link>
+        ) : (
+          <button onClick={handlePortfolioClick} className="cta-button">Start Your Portfolio</button>
+        )}
+      </div>
     </div>
-    <div className="text-center">
-      <h2 className="text-3xl font-bold mb-3">Join The Community</h2>
-      <p className="text-gray-400 max-w-md mx-auto mb-6">Connect with experts, share your journey, and grow together.</p>
-      <button className="bg-purple-600 px-6 py-3 rounded-full font-semibold">SHYN Community</button>
-    </div>
-    <div className="text-center">
-      <h2 className="text-3xl font-bold mb-3">Showcase Your Talent</h2>
-      <p className="text-gray-400 max-w-md mx-auto mb-6">Build a stunning portfolio and let your art SHYN.</p>
-      <button className="bg-purple-600 px-6 py-3 rounded-full font-semibold">Start Your Portfolio</button>
-    </div>
-  </div>
-);
+  );
+};
+
 
 const Mobile3DFallback: React.FC = () => {
     const contentData = [
@@ -66,31 +81,47 @@ const Mobile3DFallback: React.FC = () => {
 
 
 // ====================================================================
-// The Main HomePage Component
-// It now uses the hook to decide which sections to render.
+// The Main HomePage Component - NOW CONTROLLING THE MODAL
 // ====================================================================
 
 const HomePage: React.FC = () => {
   const { isMobile } = useDeviceDetection();
 
+  // --- State for the modal is now managed here, in the parent component ---
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
+
+  const handleAuthRequest = () => {
+    setAuthMode('signup');
+    setShowAuthModal(true);
+  };
+
   return (
     <div className="min-h-screen bg-black">
+      {/* The Modal is rendered here, outside of the animated components */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        mode={authMode}
+        onModeChange={setAuthMode}
+      />
+
       <Hero />
 
-      {/* Conditional Rendering Logic */}
+      {/* Conditional Rendering Logic passes the handler function down */}
       {isMobile ? (
         <>
-          <MobileHorizontalFallback />
+          <MobileHorizontalFallback onAuthRequest={handleAuthRequest} />
           <Mobile3DFallback />
         </>
       ) : (
         <>
-          <HorizontalScrollSection />
+          {/* The handler is passed as a prop */}
+          <HorizontalScrollSection onAuthRequest={handleAuthRequest} />
           <ThreeDScrollSection />
         </>
       )}
 
-      {/* The rest of the sections are stable and can be rendered normally */}
       <WhoAreYouSection />
       <HowItWorksSection />
       <BlogPreviewSection />

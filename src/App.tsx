@@ -32,6 +32,10 @@ const SingingPage = lazy(() => import('./pages/art-forms/SingingPage'));
 const DancingPage = lazy(() => import('./pages/art-forms/DancingPage'));
 const RapPage = lazy(() => import('./pages/art-forms/RapPage'));
 
+// --- ADDITION: Lazy Load the new page ---
+const VideoRecordingServicesPage = lazy(() => import('./components/VideoRecordingServices'));
+
+
 const PageRoutes: React.FC = () => {
   const location = useLocation();
 
@@ -46,6 +50,9 @@ const PageRoutes: React.FC = () => {
           <Route path="/blogs" element={<BlogsPage />} />
           <Route path="/blog/:id" element={<BlogDetailPage />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
+          
+          {/* --- ADDITION: Route for Video Recording Services --- */}
+          <Route path="/video-recording-services" element={<VideoRecordingServicesPage />} />
 
           {/* Art Form Routes */}
           <Route path="/art-form/stand-up-comedy" element={<StandUpComedyPage />} />

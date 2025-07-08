@@ -70,7 +70,7 @@ const ExpertsSection: React.FC = () => {
     );
     
     return (
-        <section id="experts" ref={sectionRef} className="py-24 bg-gray-900 relative overflow-hidden">
+        <section id="experts" ref={sectionRef} className="py-24 bg-black relative overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-gray-900 to-transparent pointer-events-none"></div>
             <div className="absolute inset-0 opacity-16">
                 <div className="w-full h-full" style={{ backgroundImage: `linear-gradient(rgba(168, 85, 247, 0.14) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.14) 1px, transparent 1px), linear-gradient(rgba(236, 72, 153, 0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(236, 72, 153, 0.10) 1px, transparent 1px)`, backgroundSize: '20px 20px, 20px 20px, 60px 60px, 60px 60px', backgroundPosition: '0 0, 0 0, 10px 10px, 10px 10px' }} ></div>

@@ -9,7 +9,8 @@ interface Slide {
   description: string;
   image: string;
   thumbnail: string;
-  path: string; // Added path for navigation
+  path: string;
+  video?: string; // Added video property
 }
 
 interface CarouselConfig {
@@ -37,6 +38,7 @@ const ModernCarousel: React.FC<CarouselProps> = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevActiveIndex, setPrevActiveIndex] = useState<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   const swipeHandlers = useSwipe({
     onSwipedLeft: () => nextSlide(),
@@ -84,6 +86,18 @@ const ModernCarousel: React.FC<CarouselProps> = ({
     return () => window.removeEventListener('keydown', handleKey);
   }, [activeIndex]);
 
+  const handleMouseEnter = (index: number) => {
+    if (videoRefs.current[index]) {
+      videoRefs.current[index]?.play();
+    }
+  };
+
+  const handleMouseLeave = (index: number) => {
+    if (videoRefs.current[index]) {
+      videoRefs.current[index]?.pause();
+    }
+  };
+
   return (
     <div className="carousel-wrapper full-screen" {...swipeHandlers}>
       <div className="main-slider">
@@ -93,14 +107,29 @@ const ModernCarousel: React.FC<CarouselProps> = ({
           let className = 'slide';
           if (isActive) className += ' active';
           if (isPrevActive) className += ' prev-active';
-          
+
           return (
-            <div key={index} className={className}>
-              <img src={slide.image} className="main-image" alt={slide.title} loading="lazy" />
+            <div
+              key={index}
+              className={className}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={() => handleMouseLeave(index)}
+            >
+              {slide.video ? (
+                <video
+                  ref={(el) => (videoRefs.current[index] = el)}
+                  src={slide.video}
+                  className="main-image"
+                  loop
+                  muted
+                  playsInline
+                />
+              ) : (
+                <img src={slide.image} className="main-image" alt={slide.title} loading="lazy" />
+              )}
               <div className="slide-content">
                 <h2>{slide.title}</h2>
                 <p>{slide.description}</p>
-                {/* The button is now a Link */}
                 <Link to={slide.path} className="btn-explore">
                   Explore <ArrowRight size={16} />
                 </Link>

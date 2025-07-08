@@ -1,0 +1,266 @@
+/* src/styles/VideoRecordingServices.css */
+
+/* --- Root Variables for Brand Consistency --- */
+:root {
+  --brand-purple: #8A2BE2; /* A vibrant purple */
+  --brand-glow: rgba(138, 43, 226, 0.5);
+  --dark-bg: #0a0a0a;
+  --primary-text: #f0f0f0;
+  --secondary-text: #a0a0a0;
+  --card-bg: #1a1a1a;
+  --border-color: #2a2a2a;
+  --hover-glow-effect: 0 0 15px var(--brand-glow), 0 0 20px var(--brand-glow);
+}
+
+/* --- Page Base --- */
+.video-services-page {
+  background-color: var(--dark-bg);
+  color: var(--primary-text);
+  padding-bottom: 6rem;
+  overflow-x: hidden;
+}
+
+/* --- General Container --- */
+.video-services-page .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* --- Header Section --- */
+.services-header {
+  text-align: center;
+  padding: 8rem 0;
+  background: radial-gradient(ellipse at top, #1a1a1a, var(--dark-bg) 70%);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.main-heading {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+  background: linear-gradient(90deg, #fff, #d0d0d0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sub-heading {
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--secondary-text);
+  line-height: 1.6;
+}
+
+/* --- Section Styling --- */
+.process-section,
+.membership-offer {
+  padding: 6rem 0;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.section-title .icon {
+  color: var(--brand-purple);
+  margin-right: 1rem;
+  width: 32px;
+  height: 32px;
+}
+
+.section-intro {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--secondary-text);
+  max-width: 700px;
+  margin: 0 auto 4rem auto;
+}
+
+/* --- Steps Grid (Process Section) --- */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.step-card {
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--brand-purple);
+  box-shadow: var(--hover-glow-effect);
+}
+
+.step-card h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-text);
+}
+
+.step-card p {
+  color: var(--secondary-text);
+  line-height: 1.7;
+}
+
+/* --- Membership Offer Section --- */
+.membership-offer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 4rem;
+  border: 1px solid var(--border-color);
+  gap: 3rem;
+}
+
+.offer-content {
+  flex: 1;
+}
+
+.offer-content .section-title,
+.offer-content .section-intro {
+  text-align: left;
+  margin-left: 0;
+  justify-content: flex-start;
+}
+
+.discount-details {
+  margin: 2rem 0;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.discount-details strong {
+  color: var(--brand-purple);
+  font-weight: 600;
+}
+
+.offer-visual {
+  flex-basis: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  border-left: 1px solid var(--border-color);
+}
+
+.zap-icon {
+  color: var(--brand-purple);
+  filter: drop-shadow(0 0 15px var(--brand-glow));
+  margin-bottom: 1rem;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.discount-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* --- CTA Button (Re-using from other sections for consistency) --- */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--brand-purple);
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: var(--hover-glow-effect);
+}
+
+.cta-button span {
+  margin-right: 0.5rem;
+}
+
+/* --- Animations --- */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* --- Responsive Design for Mobile --- */
+@media (max-width: 768px) {
+  .video-services-page .container {
+    padding: 0 1rem;
+  }
+
+  .main-heading {
+    font-size: 2.5rem;
+  }
+
+  .sub-heading {
+    font-size: 1.1rem;
+  }
+
+  .services-header {
+    padding: 6rem 0;
+  }
+
+  .process-section,
+  .membership-offer {
+    padding: 4rem 0;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .membership-offer {
+    flex-direction: column;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .offer-content .section-title,
+  .offer-content .section-intro {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .offer-visual {
+    border-left: none;
+    border-top: 1px solid var(--border-color);
+    padding-top: 2rem;
+    width: 100%;
+  }
+
+  .cta-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
