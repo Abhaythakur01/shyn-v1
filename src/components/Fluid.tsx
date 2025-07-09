@@ -18,23 +18,23 @@ const colorPalette = [
 // --- Mobile-First Configuration ---
 const baseConfig = {
     TEXTURE_DOWNSAMPLE: 1,
-    DENSITY_DISSIPATION: 0.99,
+    DENSITY_DISSIPATION: 0.96,      // Lowered for faster color fade on mobile
     VELOCITY_DISSIPATION: 0.99,
     PRESSURE_DISSIPATION: 0.8,
     PRESSURE_ITERATIONS: 25,
     CURL: 40,
-    SPLAT_RADIUS: 0.03 // Increased for a wider color cloud on touch
+    SPLAT_RADIUS: 0.03
 };
 
 // --- Desktop-Optimized Configuration ---
 const desktopConfig = {
     ...baseConfig,
     TEXTURE_DOWNSAMPLE: 0,
-    DENSITY_DISSIPATION: 0.999,
+    DENSITY_DISSIPATION: 0.97,      // Lowered for faster color fade on desktop
     VELOCITY_DISSIPATION: 0.999,
     PRESSURE_ITERATIONS: 40,
     CURL: 50,
-    SPLAT_RADIUS: 0.015 // Increased for a wider color cloud on mouse
+    SPLAT_RADIUS: 0.015
 };
 
 
@@ -505,7 +505,6 @@ const Fluid: React.FC = () => {
             animationFrameId = requestAnimationFrame(update);
         }
 
-        // UPDATED SPLAT FUNCTION FOR BETTER SPREAD
         function splat(x: number, y: number, dx: number, dy: number, color: number[]) {
             if (!gl) return;
             splatProgram.bind();
@@ -553,7 +552,6 @@ const Fluid: React.FC = () => {
 
         const handleMouseMove = (e: MouseEvent) => {
             pointers[0].moved = pointers[0].down;
-            // Increased multiplier for more forceful interaction
             pointers[0].dx = (e.offsetX - pointers[0].x) * 15.0;
             pointers[0].dy = (e.offsetY - pointers[0].y) * 15.0;
             pointers[0].x = e.offsetX;
@@ -562,7 +560,6 @@ const Fluid: React.FC = () => {
 
         const handleMouseDown = () => {
             pointers[0].down = true;
-            // Select a random color from our vibrant palette
             pointers[0].color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
         };
 
@@ -580,7 +577,6 @@ const Fluid: React.FC = () => {
                     pointers[i] = pointer;
                 }
                 pointer.moved = pointer.down;
-                // Increased multiplier for more forceful interaction
                 pointer.dx = (touches[i].pageX - pointer.x) * 15.0;
                 pointer.dy = (touches[i].pageY - pointer.y) * 15.0;
                 pointer.x = touches[i].pageX;
@@ -598,7 +594,6 @@ const Fluid: React.FC = () => {
                 pointers[i].down = true;
                 pointers[i].x = touches[i].pageX;
                 pointers[i].y = touches[i].pageY;
-                // Select a random color from our vibrant palette
                 pointers[i].color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
             }
         };
@@ -625,7 +620,7 @@ const Fluid: React.FC = () => {
             cancelAnimationFrame(animationFrameId);
             if (canvas) {
                 canvas.removeEventListener('mousemove', handleMouseMove);
-                canvas.removeEventListener('mousedown', handleMouseDown);
+                canvas.removeEventListener('mousedown',handleMouseDown);
                 window.removeEventListener('mouseup', handleMouseUp);
                 canvas.removeEventListener('touchmove', handleTouchMove);
                 canvas.removeEventListener('touchstart', handleTouchStart);
