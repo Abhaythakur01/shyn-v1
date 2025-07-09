@@ -1,33 +1,47 @@
 import React, { useRef, useEffect } from 'react';
 
-import { isMobileDevice } from '../utils/deviceDetection'; // Import the new utility
+// Assuming you have this utility. If not, you can create a simple one:
+// export const isMobileDevice = () => /Mobi/i.test(window.navigator.userAgent);
+import { isMobileDevice } from '../utils/deviceDetection';
+
+// --- A palette of vibrant colors that pop on a black screen ---
+const colorPalette = [
+    [1.0, 0.0, 0.0],   // Red
+    [1.0, 0.5, 0.0],   // Orange
+    [1.0, 1.0, 0.0],   // Yellow
+    [0.0, 1.0, 0.0],   // Green
+    [0.0, 1.0, 1.0],   // Cyan
+    [0.0, 0.5, 1.0],   // Blue
+    [1.0, 0.0, 1.0],   // Magenta
+];
 
 // --- Mobile-First Configuration ---
-// Default (Mobile) settings are less demanding
 const baseConfig = {
-    TEXTURE_DOWNSAMPLE: 2, // Higher downsampling for performance
-    DENSITY_DISSIPATION: 0.97,
-    VELOCITY_DISSIPATION: 0.98,
-    PRESSURE_DISSIPATION: 0.7,
-    PRESSURE_ITERATIONS: 15, // Fewer iterations
-    CURL: 20,
-    SPLAT_RADIUS: 0.01 // Larger radius for touch
+    TEXTURE_DOWNSAMPLE: 1,
+    DENSITY_DISSIPATION: 0.99,
+    VELOCITY_DISSIPATION: 0.99,
+    PRESSURE_DISSIPATION: 0.8,
+    PRESSURE_ITERATIONS: 25,
+    CURL: 40,
+    SPLAT_RADIUS: 0.03 // Increased for a wider color cloud on touch
 };
 
-// Desktop settings are more intensive
+// --- Desktop-Optimized Configuration ---
 const desktopConfig = {
     ...baseConfig,
-    TEXTURE_DOWNSAMPLE: 1, // Lower downsampling for quality
-    DENSITY_DISSIPATION: 0.98,
-    VELOCITY_DISSIPATION: 0.99,
-    PRESSURE_ITERATIONS: 25,
-    CURL: 30,
-    SPLAT_RADIUS: 0.005
+    TEXTURE_DOWNSAMPLE: 0,
+    DENSITY_DISSIPATION: 0.999,
+    VELOCITY_DISSIPATION: 0.999,
+    PRESSURE_ITERATIONS: 40,
+    CURL: 50,
+    SPLAT_RADIUS: 0.015 // Increased for a wider color cloud on mouse
 };
+
 
 const Fluid: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const isMobile = isMobileDevice(); // Check device type once
+
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -47,8 +61,7 @@ const Fluid: React.FC = () => {
 
         const webglContext = getWebGLContext(canvas);
         if (!webglContext || !webglContext.gl || !webglContext.ext) {
-            canvas.style.display = 'none'; // Hide canvas if WebGL fails
-            // You can show a static fallback div here
+            canvas.style.display = 'none';
             return;
         }
         const { gl, ext } = webglContext;
@@ -73,7 +86,7 @@ const Fluid: React.FC = () => {
             const formatRGBA = getSupportedFormat(gl, gl.RGBA16F, gl.RGBA, halfFloatTexType);
             const formatRG = getSupportedFormat(gl, gl.RG16F, gl.RG, halfFloatTexType);
             const formatR = getSupportedFormat(gl, gl.R16F, gl.RED, halfFloatTexType);
-            
+
             return {
                 gl,
                 ext: {
@@ -113,13 +126,13 @@ const Fluid: React.FC = () => {
             const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
             return status === gl.FRAMEBUFFER_COMPLETE;
         }
-        
+
         if (!gl || !ext) return;
 
         class GLProgram {
             uniforms: { [key: string]: WebGLUniformLocation | null };
             program: WebGLProgram;
-            
+
             constructor(vertexShader: WebGLShader, fragmentShader: WebGLShader) {
                 if (!gl) {
                     throw new Error("WebGL context is not available.");
@@ -157,7 +170,6 @@ const Fluid: React.FC = () => {
             return shader;
         };
 
-        // CORRECTED: The full vertex shader with all necessary 'varying' variables.
         const baseVertexShader = compileShader(gl.VERTEX_SHADER, `
             precision highp float;
             attribute vec2 aPosition;
@@ -176,7 +188,7 @@ const Fluid: React.FC = () => {
                 vB = vUv - vec2(0.0, texelSize.y);
                 gl_Position = vec4(aPosition, 0.0, 1.0);
             }`);
-        
+
         const clearShader = compileShader(gl.FRAGMENT_SHADER, `
             precision mediump float;
             precision mediump sampler2D;
@@ -226,7 +238,7 @@ const Fluid: React.FC = () => {
                 vec2 coord = vUv - dt * texture2D(uVelocity, vUv).xy * texelSize;
                 gl_FragColor = dissipation * texture2D(uSource, coord);
             }`);
-        
+
         const divergenceShader = compileShader(gl.FRAGMENT_SHADER, `
             precision mediump float;
             precision mediump sampler2D;
@@ -289,7 +301,6 @@ const Fluid: React.FC = () => {
                 vec2 force = 0.5 * vec2(abs(T) - abs(B), abs(R) - abs(L));
                 force /= length(force) + 0.0001;
                 force *= curl * C;
-                force.y *= -1.0;
                 vec2 vel = texture2D(uVelocity, vUv).xy;
                 gl_FragColor = vec4(vel + force * dt, 0.0, 1.0);
             }`);
@@ -405,9 +416,9 @@ const Fluid: React.FC = () => {
         })();
 
         let lastTime = Date.now();
-        
+
         initFramebuffers();
-        multipleSplats(parseInt((Math.random() * 20).toString()) + 5);
+        multipleSplats(15); 
 
         let animationFrameId: number;
         function update() {
@@ -463,7 +474,7 @@ const Fluid: React.FC = () => {
             gl.uniform2f(divergenceProgram.uniforms.texelSize, 1.0 / textureWidth, 1.0 / textureHeight);
             gl.uniform1i(divergenceProgram.uniforms.uVelocity, velocity.read[2]);
             blit(divergence[1]);
-            
+
             clearProgram.bind();
             gl.uniform1i(clearProgram.uniforms.uTexture, pressure.read[2]);
             gl.uniform1f(clearProgram.uniforms.value, config.PRESSURE_DISSIPATION);
@@ -494,20 +505,27 @@ const Fluid: React.FC = () => {
             animationFrameId = requestAnimationFrame(update);
         }
 
+        // UPDATED SPLAT FUNCTION FOR BETTER SPREAD
         function splat(x: number, y: number, dx: number, dy: number, color: number[]) {
             if (!gl) return;
             splatProgram.bind();
-            gl.uniform1i(splatProgram.uniforms.uTarget, velocity.read[2]);
             if (!canvas) return;
+
+            // Splat a concentrated jet of velocity
+            gl.uniform1i(splatProgram.uniforms.uTarget, velocity.read[2]);
             gl.uniform1f(splatProgram.uniforms.aspectRatio, canvas.width / canvas.height);
             gl.uniform2f(splatProgram.uniforms.point, x / canvas.width, 1.0 - y / canvas.height);
             gl.uniform3f(splatProgram.uniforms.color, dx, -dy, 1.0);
-            gl.uniform1f(splatProgram.uniforms.radius, config.SPLAT_RADIUS);
+            // Use a smaller radius for the velocity jet to make it more concentrated
+            gl.uniform1f(splatProgram.uniforms.radius, config.SPLAT_RADIUS * 0.25);
             blit(velocity.write[1]);
             velocity.swap();
 
+            // Splat a wider cloud of color
             gl.uniform1i(splatProgram.uniforms.uTarget, density.read[2]);
-            gl.uniform3f(splatProgram.uniforms.color, color[0] * 0.3, color[1] * 0.3, color[2] * 0.3);
+            gl.uniform3f(splatProgram.uniforms.color, color[0], color[1], color[2]);
+             // Use the normal, larger radius for the color
+            gl.uniform1f(splatProgram.uniforms.radius, config.SPLAT_RADIUS);
             blit(density.write[1]);
             density.swap();
         }
@@ -515,7 +533,7 @@ const Fluid: React.FC = () => {
         function multipleSplats(amount: number) {
             if (!canvas) return;
             for (let i = 0; i < amount; i++) {
-                const color = [Math.random() * 10, Math.random() * 10, Math.random() * 10];
+                const color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
                 const x = canvas.width * Math.random();
                 const y = canvas.height * Math.random();
                 const dx = 1000 * (Math.random() - 0.5);
@@ -532,24 +550,26 @@ const Fluid: React.FC = () => {
                 initFramebuffers();
             }
         }
-        
+
         const handleMouseMove = (e: MouseEvent) => {
             pointers[0].moved = pointers[0].down;
-            pointers[0].dx = (e.offsetX - pointers[0].x) * 10.0;
-            pointers[0].dy = (e.offsetY - pointers[0].y) * 10.0;
+            // Increased multiplier for more forceful interaction
+            pointers[0].dx = (e.offsetX - pointers[0].x) * 15.0;
+            pointers[0].dy = (e.offsetY - pointers[0].y) * 15.0;
             pointers[0].x = e.offsetX;
             pointers[0].y = e.offsetY;
         };
 
         const handleMouseDown = () => {
             pointers[0].down = true;
-            pointers[0].color = [Math.random() + 0.2, Math.random() + 0.2, Math.random() + 0.2];
+            // Select a random color from our vibrant palette
+            pointers[0].color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
         };
 
         const handleMouseUp = () => {
             pointers[0].down = false;
         };
-        
+
         const handleTouchMove = (e: TouchEvent) => {
             e.preventDefault();
             const touches = e.targetTouches;
@@ -560,13 +580,14 @@ const Fluid: React.FC = () => {
                     pointers[i] = pointer;
                 }
                 pointer.moved = pointer.down;
-                pointer.dx = (touches[i].pageX - pointer.x) * 10.0;
-                pointer.dy = (touches[i].pageY - pointer.y) * 10.0;
+                // Increased multiplier for more forceful interaction
+                pointer.dx = (touches[i].pageX - pointer.x) * 15.0;
+                pointer.dy = (touches[i].pageY - pointer.y) * 15.0;
                 pointer.x = touches[i].pageX;
                 pointer.y = touches[i].pageY;
             }
         };
-        
+
         const handleTouchStart = (e: TouchEvent) => {
              e.preventDefault();
             const touches = e.targetTouches;
@@ -577,10 +598,11 @@ const Fluid: React.FC = () => {
                 pointers[i].down = true;
                 pointers[i].x = touches[i].pageX;
                 pointers[i].y = touches[i].pageY;
-                pointers[i].color = [Math.random() + 0.2, Math.random() + 0.2, Math.random() + 0.2];
+                // Select a random color from our vibrant palette
+                pointers[i].color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
             }
         };
-        
+
         const handleTouchEnd = (e: TouchEvent) => {
             const touches = e.changedTouches;
             for (let i = 0; i < touches.length; i++)
@@ -595,21 +617,23 @@ const Fluid: React.FC = () => {
         canvas.addEventListener('touchmove', handleTouchMove, false);
         canvas.addEventListener('touchstart', handleTouchStart, false);
         window.addEventListener('touchend', handleTouchEnd);
-        
+
         update();
 
         // Cleanup function
         return () => {
             cancelAnimationFrame(animationFrameId);
-            canvas.removeEventListener('mousemove', handleMouseMove);
-            canvas.removeEventListener('mousedown', handleMouseDown);
-            window.removeEventListener('mouseup', handleMouseUp);
-            canvas.removeEventListener('touchmove', handleTouchMove);
-            canvas.removeEventListener('touchstart', handleTouchStart);
-            window.removeEventListener('touchend', handleTouchEnd);
+            if (canvas) {
+                canvas.removeEventListener('mousemove', handleMouseMove);
+                canvas.removeEventListener('mousedown', handleMouseDown);
+                window.removeEventListener('mouseup', handleMouseUp);
+                canvas.removeEventListener('touchmove', handleTouchMove);
+                canvas.removeEventListener('touchstart', handleTouchStart);
+                window.removeEventListener('touchend', handleTouchEnd);
+            }
         };
 
-    }, []);
+    }, [isMobile]); // Rerun if the device type changes
 
     return (
         <>
