@@ -41,7 +41,7 @@ export interface BlogPost {
   readTime: string;
 }
 
-// Added the missing interface
+// --- UPDATED: Added optional properties ---
 export interface ArtFormContent {
   id: string;
   name: string;
@@ -71,7 +71,12 @@ export interface ArtFormContent {
     title: string;
     description: string;
     buttonText: string;
+    buttonLink?: string; // Optional link for the button
   };
+  customSections?: { // Optional array for custom content
+    title: string;
+    content: string;
+  }[];
 }
 
 export interface Testimonial {

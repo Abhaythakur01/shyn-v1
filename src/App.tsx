@@ -3,18 +3,17 @@ import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
-// Styles
+// Styles & Utils
 import './styles/scrollbar.css';
+import { isMobileDevice } from './utils/deviceDetection';
 
 // Components
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
 import MouseTrail from './components/MouseTrail';
-import { isMobileDevice } from './utils/deviceDetection';
 
 // --- Page Imports ---
-// Main Pages
 import HomePage from './pages/HomePage';
 import WhoAreYouPage from './pages/WhoAreYouPage';
 import MembershipPage from './pages/MembershipPage';
@@ -24,7 +23,7 @@ import BlogDetailPage from './pages/BlogDetailPage';
 import PortfolioPage from './pages/PortfolioPage';
 import VideoRecordingServicesPage from './components/VideoRecordingServices';
 
-// Art Form Pages (already lazy-loaded)
+// Art Form Pages
 const StandUpComedyPage = lazy(() => import('./pages/art-forms/StandUpComedyPage'));
 const PoetryPage = lazy(() => import('./pages/art-forms/PoetryPage'));
 const StorytellingPage = lazy(() => import('./pages/art-forms/StorytellingPage'));
@@ -32,13 +31,17 @@ const SingingPage = lazy(() => import('./pages/art-forms/SingingPage'));
 const DancingPage = lazy(() => import('./pages/art-forms/DancingPage'));
 const RapPage = lazy(() => import('./pages/art-forms/RapPage'));
 
-// --- NEW: Lazy Load Info & Legal Pages ---
+// Info & Legal Pages
 const AboutUsPage = lazy(() => import('./pages/info/AboutUsPage'));
 const ContactPage = lazy(() => import('./pages/info/ContactPage'));
 const HelpCenterPage = lazy(() => import('./pages/info/HelpCenterPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/info/PrivacyPolicyPage'));
 const TermsOfServicePage = lazy(() => import('./pages/info/TermsOfServicePage'));
 const CommunityGuidelinesPage = lazy(() => import('./pages/info/CommunityGuidelinesPage'));
+
+// --- NEW: Lazy Load Upcoming Events Page ---
+// Note the corrected path based on your file structure
+const UpcomingEventsPage = lazy(() => import('./pages/info/UpcomingEventsPage'));
 
 
 const PageRoutes: React.FC = () => {
@@ -48,7 +51,7 @@ const PageRoutes: React.FC = () => {
     <AnimatePresence mode="wait">
       <Suspense fallback={<div className="min-h-screen bg-black" />}>
         <Routes location={location} key={location.pathname}>
-          {/* Existing Routes */}
+          {/* Main Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/who-are-you" element={<WhoAreYouPage />} />
           <Route path="/membership" element={<MembershipPage />} />
@@ -66,13 +69,16 @@ const PageRoutes: React.FC = () => {
           <Route path="/art-form/dancing" element={<DancingPage />} />
           <Route path="/art-form/rap" element={<RapPage />} />
 
-          {/* --- NEW: Info & Legal Routes --- */}
+          {/* Info & Legal Routes */}
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/help-center" element={<HelpCenterPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="/terms-of-service" element={<TermsOfServicePage />} />
           <Route path="/community-guidelines" element={<CommunityGuidelinesPage />} />
+
+          {/* --- NEW: Route for Upcoming Events --- */}
+          <Route path="/upcoming-events" element={<UpcomingEventsPage />} />
         </Routes>
       </Suspense>
     </AnimatePresence>

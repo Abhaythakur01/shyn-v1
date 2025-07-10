@@ -2,7 +2,6 @@ import React from 'react';
 import ArtFormPage from '../../components/ArtFormPage';
 import { ArtFormContent } from '../../types';
 
-
 const standUpComedyContent: ArtFormContent = {
   id: 'stand-up-comedy',
   name: 'Stand-up Comedy',
@@ -11,27 +10,39 @@ const standUpComedyContent: ArtFormContent = {
   color: 'from-yellow-400 to-orange-500',
   
   introduction: {
-    title: "Find Your Funny Bone",
-    body1: "Stand-up comedy is a unique and challenging art form that combines storytelling, performance, and sharp wit. It's about finding the humor in everyday life and connecting with an audience on a personal level. Our course is designed to take you from open-mic hopeful to a confident stage performer.",
-    body2: "Led by seasoned comedians, you'll learn how to write jokes, structure a set, handle a crowd, and develop your own unique comedic voice. We believe anyone can be funny, and we'll give you the tools to prove it."
+    title: "Find Your Funny",
+    body1: "“The comic is the one who says ‘Wait a minute’ and says it with a laugh.” - Lenny Bruce. Stand-up is more than just telling jokes; it's about perspective, timing, and connecting with an audience through shared vulnerability and humor. It's the art of turning pain, observation, and absurdity into laughter.",
+    body2: "“The hardest thing to do is to be true to yourself, especially when everybody is watching.” - Dave Chappelle. Our course is designed to help you discover your unique comedic voice, not just mimic others. We'll guide you from the spark of an idea to a polished, confident set."
   },
 
   featuredWorkshop: {
-    title: "Workshop: From Punchline to Headliner",
+    title: "The Craft of Comedy: A Beginner's Guide",
     videoPlaceholder: {
       image: '/images/stand-up-comedy.jpeg',
       alt: 'Stand-up comedy workshop'
     },
-    description: "An inside look at joke writing and performance techniques from a pro."
+    description: "An inside look at joke writing, stage presence, and performance techniques from a pro."
   },
 
   whatYouWillLearn: [
-    'Joke writing structures (Setup/Punchline)',
-    'The art of storytelling and misdirection',
-    'Developing a stage persona',
-    'Microphone technique and stage presence',
-    'Handling hecklers and difficult crowds',
-    'Building a 5, 10, and 15-minute set'
+    'Joke Structures: Setup, Punchline, and Tags',
+    'The Art of Storytelling & Misdirection',
+    'Developing a Unique Stage Persona',
+    'Microphone Technique and Stage Presence',
+    'Handling Hecklers and Difficult Crowds',
+    'Building a Killer 5-Minute Set'
+  ],
+
+  // --- NEW: Added sections for Open Mics and Recommended Reading ---
+  customSections: [
+    {
+      title: "The Importance of Open Mics",
+      content: "Open mics are the gym for comedians. It's where you test new material, bomb, succeed, and build resilience. It’s the most critical step in finding your voice and learning what makes people laugh. At SHYN, we provide a supportive environment for you to take that brave first step onto the stage."
+    },
+    {
+      title: "Recommended Reading for Beginners",
+      content: "To supplement your learning, we highly recommend 'The Comedy Bible' by Judy Carter. It's a fantastic resource that covers everything from writing jokes to landing an agent, providing a comprehensive roadmap for any aspiring comedian."
+    }
   ],
 
   courseInfo: {
@@ -41,9 +52,10 @@ const standUpComedyContent: ArtFormContent = {
   },
 
   cta: {
-    title: "Ready to Get Laughs?",
-    description: "Enroll now and start your journey to becoming a stand-up comedian.",
-    buttonText: "Start My Comedy Career"
+    title: "Ready to Take the Stage?",
+    description: "Your journey from the audience to the spotlight starts here. Find an open mic and sign up!",
+    buttonText: "Participate in SHYN Open Mic",
+    buttonLink: "/upcoming-events" // --- NEW: Link to the events page ---
   }
 };
 

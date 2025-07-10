@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import WhoAreYouSection from '../components/WhoAreYouSection';
 import HowItWorksSection from '../components/HowItWorksSection';
@@ -14,20 +15,10 @@ import { useDeviceDetection } from '../utils/deviceDetection';
 // --- ADDITIONS: Import authentication tools ---
 import AuthModal from '../components/AuthModal';
 import { useAuth } from '../hooks/useAuth';
-import { Link } from 'react-router-dom';
 
-// ====================================================================
-// Mobile Fallback Component - NOW AUTHENTICATION AWARE
-// ====================================================================
+// --- Mobile Fallback Component (Now Authentication-Aware) ---
 const MobileHorizontalFallback: React.FC<{ onAuthRequest: () => void }> = ({ onAuthRequest }) => {
   const { user } = useAuth();
-
-  const handlePortfolioClick = () => {
-    if (!user) {
-      onAuthRequest();
-    }
-  };
-
   return (
     <div className="bg-black text-white py-16 px-4 space-y-12">
       <div className="text-center">
@@ -46,13 +37,12 @@ const MobileHorizontalFallback: React.FC<{ onAuthRequest: () => void }> = ({ onA
         {user ? (
           <Link to="/portfolio" className="cta-button inline-block">Start Your Portfolio</Link>
         ) : (
-          <button onClick={handlePortfolioClick} className="cta-button">Start Your Portfolio</button>
+          <button onClick={onAuthRequest} className="cta-button">Start Your Portfolio</button>
         )}
       </div>
     </div>
   );
 };
-
 
 const Mobile3DFallback: React.FC = () => {
     const contentData = [
@@ -79,15 +69,9 @@ const Mobile3DFallback: React.FC = () => {
     );
 };
 
-
-// ====================================================================
-// The Main HomePage Component - NOW CONTROLLING THE MODAL
-// ====================================================================
-
+// --- Main HomePage Component (Now Controls the Modal) ---
 const HomePage: React.FC = () => {
   const { isMobile } = useDeviceDetection();
-
-  // --- State for the modal is now managed here, in the parent component ---
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
 
@@ -98,7 +82,6 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* The Modal is rendered here, outside of the animated components */}
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
@@ -106,9 +89,9 @@ const HomePage: React.FC = () => {
         onModeChange={setAuthMode}
       />
 
-      <Hero />
+      {/* --- FIX: Pass the onAuthRequest prop to the Hero component --- */}
+      <Hero onAuthRequest={handleAuthRequest} />
 
-      {/* Conditional Rendering Logic passes the handler function down */}
       {isMobile ? (
         <>
           <MobileHorizontalFallback onAuthRequest={handleAuthRequest} />
@@ -116,7 +99,6 @@ const HomePage: React.FC = () => {
         </>
       ) : (
         <>
-          {/* The handler is passed as a prop */}
           <HorizontalScrollSection onAuthRequest={handleAuthRequest} />
           <ThreeDScrollSection />
         </>

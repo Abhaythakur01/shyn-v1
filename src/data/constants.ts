@@ -1,22 +1,7 @@
 import { ArtForm, Expert, MembershipPlan, BlogPost, Testimonial, FaqItem } from '../types';
 
 export const artForms: ArtForm[] = [
-  {
-    id: 'painting',
-    name: 'Painting',
-    description: 'Express your emotions through colors and brush strokes',
-    image: 'https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg?auto=compress&cs=tinysrgb&w=800',
-    color: 'from-red-400 to-pink-500',
-    gradient: 'bg-gradient-to-br from-red-400/20 to-pink-500/20'
-  },
-  {
-    id: 'sculpture',
-    name: 'Sculpture',
-    description: 'Shape your vision into three-dimensional reality',
-    image: 'https://images.pexels.com/photos/1643409/pexels-photo-1643409.jpeg?auto=compress&cs=tinysrgb&w=800',
-    color: 'from-stone-400 to-gray-600',
-    gradient: 'bg-gradient-to-br from-stone-400/20 to-gray-600/20'
-  },
+ 
   {
     id: 'stand-up-comedy',
     name: 'Stand-up Comedy',
@@ -265,5 +250,75 @@ export const faqItems: FaqItem[] = [
     id: '4',
     question: 'What kind of support can I expect?',
     answer: "You'll have access to community forums, priority email support with our Mastermind plan, and direct 1-on-1 sessions with experts depending on your chosen membership level."
+  }
+];
+
+
+export const legendaryComics: { id: string; name: string; style: string; image: string; }[] = [
+  {
+    id: '1',
+    name: 'George Carlin',
+    style: 'Observational, Satire, Black Comedy',
+    image: 'https://i.imgur.com/vA16vD3.jpeg'
+  },
+  {
+    id: '2',
+    name: 'Richard Pryor',
+    style: 'Confessional, Observational, Improvisational',
+    image: 'https://i.imgur.com/gI23gS6.jpeg'
+  },
+  {
+    id: '3',
+    name: 'Dave Chappelle',
+    style: 'Observational, Surreal, Satire',
+    image: 'https://i.imgur.com/nLq2aJ0.jpeg'
+  },
+  {
+    id: '4',
+    name: 'Vir Das',
+    style: 'Satire, Political, Observational',
+    image: 'https://i.imgur.com/4aA3n7D.jpeg'
+  },
+  {
+    id: '5',
+    name: 'Zakir Khan',
+    style: 'Storytelling, Relatable, Anecdotal',
+    image: 'https://i.imgur.com/s6bS1g0.jpeg'
+  },
+  {
+    id: '6',
+    name: 'Norm Macdonald',
+    style: 'Anti-humor, Deadpan, Surreal',
+    image: 'https://i.imgur.com/6QKlY6I.jpeg'
+  },
+  {
+    id: '7',
+    name: 'Kenny Sebastian',
+    style: 'Musical, Observational, Relatable',
+    image: 'https://i.imgur.com/YwA5gan.jpeg'
+  },
+  {
+    id: '8',
+    name: 'Biswa Kalyan Rath',
+    style: 'Absurdist, Observational, Ranting Style',
+    image: 'https://i.imgur.com/oM0gE8b.jpeg'
+  },
+  {
+    id: '9',
+    name: 'Aditi Mittal',
+    style: 'Sharp, Fearless, Feminist Humor',
+    image: 'https://i.imgur.com/2gA3KDB.jpeg'
+  },
+  {
+    id: '10',
+    name: 'Ramesh Pisharody',
+    style: 'Observational, Mimicry, Stage Performance',
+    image: 'https://i.imgur.com/j5bY2Lh.jpeg'
+  },
+  {
+    id: '11',
+    name: 'Dharmajan Bolgatty',
+    style: 'Sketch Comedy, Duo Performance, Slapstick',
+    image: 'https://i.imgur.com/y8v7uGk.jpeg'
   }
 ];
