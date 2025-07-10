@@ -27,6 +27,7 @@
     "react-dom": "^19.0.0",
     "react-fast-marquee": "^1.6.5",
     "react-router-dom": "^6.26.1",
+    "tailwind-scrollbar": "^3.1.0",
     "three": "^0.177.0"
   },
   "devDependencies": {

@@ -822,3 +822,39 @@ FIX: Mobile Performance Optimizations
     background-color: rgba(12, 0, 31, 0.7);
   }
 }
+
+/*
+================================================================
+This for the Who are you section page legend scroll bar section
+================================================================
+*/
+
+/* Custom Scrollbar — hidden until hover */
+.scrollbar-hide-until-hover {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide-until-hover:hover {
+  scrollbar-width: thin;
+}
+
+.scrollbar-hide-until-hover::-webkit-scrollbar {
+  height: 0px;
+  transition: height 0.3s ease;
+}
+
+.scrollbar-hide-until-hover:hover::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scrollbar-hide-until-hover::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 10px;
+}
+
+.scrollbar-hide-until-hover::-webkit-scrollbar-track {
+  background: #111;
+}
+
+
