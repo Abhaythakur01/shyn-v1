@@ -1,4 +1,5 @@
 // src/components/MembershipSection.tsx
+
 import React from 'react';
 import { Boxes } from '../components/ui/background-boxes';
 import { cn } from '../lib/utils';
@@ -12,21 +13,19 @@ const features = [
   { icon: <Mic size={20} className="text-green-400" />, text: "Discuss your content with experts and get personalized feedback to enhance its quality." },
 ];
 
+// Updated to use local image assets
 const images = [
-  "https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1587593202952-328602e1c073?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "/assets/membership/1.jpeg",
+  "/assets/membership/2.jpeg",
+  "/assets/membership/3.jpeg",
+  "/assets/membership/4.jpg",
+  "/assets/membership/5.jpg",
 ];
 
 
-// ====================================================================
-// Main Component with Mobile Detection
-// ====================================================================
 const MembershipSection: React.FC = () => {
   const { isMobile } = useDeviceDetection();
 
-  // --- Mobile Fallback View ---
-  // A simplified, vertically stacked layout that is guaranteed to be stable.
   if (isMobile) {
     return (
       <div id="membership" className="w-full bg-black py-20 px-4">
@@ -55,8 +54,6 @@ const MembershipSection: React.FC = () => {
     );
   }
 
-  // --- Desktop View ---
-  // The original, feature-rich component for larger screens.
   return (
     <div id="membership" className="min-h-screen w-full overflow-hidden bg-black">
       <div className="relative flex h-full w-full items-center justify-center py-24">
@@ -90,12 +87,26 @@ const MembershipSection: React.FC = () => {
             </div>
 
             {/* Right Column: Image Gallery */}
-            <div className="relative hidden h-[500px] w-full lg:block">
-              <img src={images[0]} alt="Workshop with artists" className="absolute left-0 top-0 h-2/3 w-2/3 rounded-2xl object-cover shadow-2xl transition-transform duration-300 hover:rotate-[-3deg] hover:scale-105" />
-              <img src={images[1]} alt="Creative collaboration meeting" className="absolute bottom-0 right-0 h-1/2 w-3/5 rounded-2xl object-cover shadow-2xl transition-transform duration-300 hover:rotate-[2deg] hover:scale-105" />
-              <img src={images[2]} alt="Video editing suite" className="absolute left-1/4 top-1/2 h-auto w-1/2 rounded-2xl object-cover shadow-2xl transition-transform duration-300 hover:rotate-[5deg] hover:scale-110" />
+            <div className="relative hidden w-full lg:flex lg:justify-center lg:items-center">
+            <div className="grid grid-cols-3 gap-6 p-2">
+            {images.map((img, index) => (
+              <div
+                key={index}
+                className={`relative overflow-hidden rounded-3xl shadow-2xl transition-transform duration-500 hover:scale-105 hover:brightness-110 ${
+                  index === 1 || index === 3 ? 'translate-y-6' : ''
+                }`}
+                style={{ width: '220px', height: '220px' }}
+              >
+                <img
+                  src={img}
+                  alt={`Membership visual ${index + 1}`}
+                  className="h-full w-full object-cover rounded-3xl"
+                />
+              </div>
+            ))}
             </div>
-          </div>
+            </div>
+            </div>
         </div>
       </div>
     </div>
