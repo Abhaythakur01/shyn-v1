@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { Plus, Grid, List, Search, Filter, Youtube, Link as LinkIcon, Play, X } from 'lucide-react';
+import { Plus, Grid, List, Search, Filter, Youtube, Link as LinkIcon, Play, X, Star } from 'lucide-react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // --- Helper function to extract YouTube Video ID from various URL formats ---
 const getYouTubeId = (url: string): string | null => {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const regExp = /^.*(http:\/\/googleusercontent.com\/youtube.com\/vi?\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
   const match = url.match(regExp);
   return (match && match[2].length === 11) ? match[2] : null;
 };
@@ -26,6 +26,9 @@ const PortfolioPage: React.FC = () => {
   const [linkError, setLinkError] = useState('');
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
+  // --- State to determine if the user is a member ---
+  const [isMember, setIsMember] = useState(true); // Set to true for demonstration purposes
+
   const handleAddLink = () => {
     const videoId = getYouTubeId(newLink);
     if (videoId) {
@@ -43,7 +46,6 @@ const PortfolioPage: React.FC = () => {
     }
   };
 
-  // --- NEW: Function to handle deleting a video ---
   const handleDeleteLink = (idToDelete: string) => {
     setYoutubeLinks(currentLinks => currentLinks.filter(video => video.id !== idToDelete));
   };
@@ -70,7 +72,15 @@ const PortfolioPage: React.FC = () => {
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">My Portfolio</h1>
+                <div className="flex items-center gap-4">
+                    <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">My Portfolio</h1>
+                    {isMember && (
+                        <div className="membership-badge">
+                            <Star size={16} />
+                            <span>SHYN Member</span>
+                        </div>
+                    )}
+                </div>
                 <p className="text-gray-400">Showcase your artistic journey and creations</p>
               </div>
               <button className="inline-flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-md hover:shadow-xl">
@@ -100,7 +110,7 @@ const PortfolioPage: React.FC = () => {
             </div>
             {linkError && <p className="text-red-400 text-sm mt-3">{linkError}</p>}
           </div>
-          
+
           {/* YouTube Videos Grid */}
           {youtubeLinks.length > 0 && (
             <div className="mb-12">
@@ -108,10 +118,9 @@ const PortfolioPage: React.FC = () => {
                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {youtubeLinks.map((video) => (
                   <div key={video.id} onClick={() => setPlayingVideoId(video.id)} className="relative bg-gray-800 rounded-2xl shadow-lg overflow-hidden group cursor-pointer transform hover:scale-105 transition-transform duration-300">
-                    {/* --- NEW: Delete Button --- */}
                     <button
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevents the video player from opening
+                        e.stopPropagation();
                         handleDeleteLink(video.id);
                       }}
                       className="absolute top-2 right-2 z-10 bg-black/50 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 hover:bg-red-500 transition-all duration-200"
@@ -120,9 +129,9 @@ const PortfolioPage: React.FC = () => {
                       <X size={16} />
                     </button>
                     <div className="relative aspect-video">
-                      <img 
-                        src={video.thumbnailUrl} 
-                        alt="YouTube Thumbnail" 
+                      <img
+                        src={video.thumbnailUrl}
+                        alt="YouTube Thumbnail"
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           e.currentTarget.src = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`;

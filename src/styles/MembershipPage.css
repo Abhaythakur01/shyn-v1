@@ -1,0 +1,290 @@
+/* src/styles/MembershipPage.css */
+
+.membership-page-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #000;
+  padding: 8rem 1.5rem 4rem;
+  overflow: hidden;
+  color: #fff;
+}
+
+.membership-content {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* Hero Section */
+.membership-hero {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.hero-title .highlight {
+  background: linear-gradient(90deg, #a855f7, #d946ef);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: #a0aec0;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.price-tag {
+  display: inline-flex;
+  align-items: baseline;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #2a2a2a;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.duration {
+  font-size: 1rem;
+  color: #a0aec0;
+  margin-left: 0.5rem;
+}
+
+/* Perks Section */
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+}
+
+.perks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.perk-card {
+  background-color: #111;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.perk-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
+.perk-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background-color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+.perk-icon-wrapper svg {
+  width: 24px;
+  height: 24px;
+}
+
+.perk-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.perk-desc {
+  font-size: 0.9rem;
+  color: #a0aec0;
+  line-height: 1.5;
+}
+
+/* Payment Section */
+.payment-box {
+  background-color: #111;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.payment-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.payment-button {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background-color: #ffffff;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 50px;
+}
+
+.payment-button .payment-icon {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+}
+
+.payment-button.selected {
+  border-color: #a855f7;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+
+.payment-button:hover, .payment-button:focus {
+  border-color: #a855f7;
+  outline: none;
+}
+
+/* --- FINAL CORRECTED BUTTON STYLES --- */
+
+/* This rule targets the button specifically when it DOES NOT have the .active class. */
+.cta-button:not(.active) {
+  background: transparent;
+  border: 2px solid #4a4a4a;
+  color: #888;
+  cursor: not-allowed;
+  transform: none; /* Explicitly reset transform */
+  box-shadow: none; /* Explicitly reset box-shadow */
+}
+
+/* This is the general CTA button styling for layout and text. */
+.cta-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+/* This class gets added via JS to make the button ACTIVE and overrides the default state. */
+.cta-button.active {
+  background: linear-gradient(90deg, #a855f7, #d946ef);
+  border-color: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* The hover effect ONLY applies when the button is active. */
+.cta-button.active:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+}
+
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+}
+
+/* --- QR Code Modal Styles --- */
+.qr-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+.qr-modal-content {
+  position: relative;
+  background-color: #111;
+  border: 1px solid #3a3a3a;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.close-modal-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #333;
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.close-modal-button:hover {
+    background-color: #444;
+}
+
+.qr-modal-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.qr-code-container {
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.qr-modal-instructions {
+  color: #a0aec0;
+  margin-bottom: 1rem;
+}
+
+.qr-modal-note {
+  font-size: 0.8rem;
+  color: #777;
+}
