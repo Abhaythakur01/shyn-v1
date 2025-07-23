@@ -1,4 +1,5 @@
-import { ArtForm, Expert, MembershipPlan, BlogPost, Testimonial, FaqItem } from '../types';
+import { ArtForm, Expert, MembershipPlan, BlogPost, Testimonial, FaqItem, VideoStat, Like, ImprovementTip, UserProfileStats } from '../types';
+
 
 export const artForms: ArtForm[] = [
  
@@ -254,3 +255,34 @@ export const faqItems: FaqItem[] = [
 ];
 
 
+// --- NEW MOCK DATA FOR STATISTICS ---
+
+export const videoStats: VideoStat[] = [
+  { videoId: '1', title: "My First Stand-up Set", views: 12500, likes: 850, comments: 120, averageWatchTime: "3:15" },
+  { videoId: '2', title: "A Poem About a Cat", views: 8200, likes: 620, comments: 88, averageWatchTime: "1:55" },
+  { videoId: '3', title: "How to Write a Killer Joke", views: 25000, likes: 1500, comments: 250, averageWatchTime: "5:30" },
+  { videoId: '4', title: "My Latest Song Cover", views: 5300, likes: 410, comments: 65, averageWatchTime: "2:10" },
+];
+
+export const videoLikes: Like[] = [
+    { userId: 'u1', userName: 'Alice', userAvatar: '/path/to/avatar1.png', videoId: '1' },
+    { userId: 'u2', userName: 'Bob', userAvatar: '/path/to/avatar2.png', videoId: '3' },
+    { userId: 'u3', userName: 'Charlie', userAvatar: '/path/to/avatar3.png', videoId: '1' },
+    { userId: 'u4', userName: 'Diana', userAvatar: '/path/to/avatar4.png', videoId: '2' },
+];
+
+export const improvementTips: ImprovementTip[] = [
+    { id: 't1', title: "Make Thumbnails Pop", description: "Use high-contrast colors and clear, bold text to grab attention.", category: 'Thumbnails' },
+    { id: 't2', title: "Write Intriguing Titles", description: "Ask a question or create a curiosity gap in your titles to encourage clicks.", category: 'Titles' },
+    { id: 't3', title: "Engage in the Comments", description: "Reply to comments within the first few hours to boost engagement and community.", category: 'Engagement' },
+    { id: 't4', title: "Analyze Your Watch Time", description: "Check your analytics to see where viewers drop off and adjust your content to keep them hooked.", category: 'Content' },
+];
+
+// --- NEW MOCK DATA FOR USER PROFILE ---
+
+export const userProfileStats: UserProfileStats = {
+  followers: 1500, // Change this number to test different levels! (e.g., 50, 500, 1500)
+  following: 120,
+  totalViews: 150000,
+  totalLikes: 8200,
+};

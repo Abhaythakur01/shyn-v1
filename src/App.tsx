@@ -1,6 +1,6 @@
 // src/App.tsx
 import React, { useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 // Styles & Utils
@@ -20,7 +20,7 @@ import MembershipPage from './pages/MembershipPage';
 import ExpertsPage from './pages/ExpertsPage';
 import BlogsPage from './pages/BlogsPage';
 import BlogDetailPage from './pages/BlogDetailPage';
-import PortfolioPage from './pages/PortfolioPage';
+import PortfolioPage from './pages/portfolio/PortfolioPage';
 import VideoRecordingServicesPage from './components/VideoRecordingServices';
 
 // Art Form Pages
@@ -30,6 +30,30 @@ const StorytellingPage = lazy(() => import('./pages/art-forms/StorytellingPage')
 const SingingPage = lazy(() => import('./pages/art-forms/SingingPage'));
 const DancingPage = lazy(() => import('./pages/art-forms/DancingPage'));
 const RapPage = lazy(() => import('./pages/art-forms/RapPage'));
+
+
+// Import Settings Pages
+// --- Import ALL Settings Pages ---
+import SettingsLayout from './pages/portfolio/settings/SettingsLayout';
+import ProfileSettingsPage from './pages/portfolio/settings/ProfileSettingsPage';
+import NotificationSettingsPage from './pages/portfolio/settings/NotificationSettingsPage';
+import PrivacySettingsPage from './pages/portfolio/settings/PrivacySettingsPage';
+import AccountSettingsPage from './pages/portfolio/settings/AccountSettingsPage';
+import AppearanceSettingsPage from './pages/portfolio/settings/AppearanceSettingsPage';
+import BillingSettingsPage from './pages/portfolio/settings/BillingSettingsPage';
+// --- NEW ---
+import SharingSettingsPage from './pages/portfolio/settings/SharingSettingsPage';
+import WatermarkingSettingsPage from './pages/portfolio/settings/WatermarkingSettingsPage';
+import BlockedUsersSettingsPage from './pages/portfolio/settings/BlockedUsersSettingsPage';
+import SecuritySettingsPage from './pages/portfolio/settings/SecuritySettingsPage';
+import DataManagementSettingsPage from './pages/portfolio/settings/DataManagementSettingsPage';
+import AccessibilitySettingsPage from './pages/portfolio/settings/AccessibilitySettingsPage';
+import LanguageSettingsPage from './pages/portfolio/settings/LanguageSettingsPage';
+import IntegrationsSettingsPage from './pages/portfolio/settings/IntegrationsSettingsPage';
+import VerificationSettingsPage from './pages/portfolio/settings/VerificationSettingsPage';
+import ReferralsSettingsPage from './pages/portfolio/settings/ReferralsSettingsPage';
+
+
 
 // Info & Legal Pages
 const AboutUsPage = lazy(() => import('./pages/info/AboutUsPage'));
@@ -79,6 +103,27 @@ const PageRoutes: React.FC = () => {
 
           {/* --- NEW: Route for Upcoming Events --- */}
           <Route path="/upcoming-events" element={<UpcomingEventsPage />} />
+          {/* Settings Routes */}
+          {/* --- UPDATED: All Settings Routes are now defined --- */}
+          <Route path="/settings" element={<SettingsLayout />}>
+            <Route index element={<Navigate to="profile" replace />} />
+            <Route path="profile" element={<ProfileSettingsPage />} />
+            <Route path="account" element={<AccountSettingsPage />} />
+            <Route path="notifications" element={<NotificationSettingsPage />} />
+            <Route path="appearance" element={<AppearanceSettingsPage />} />
+            <Route path="privacy"  element={<PrivacySettingsPage />} />
+            <Route path="billing" element={<BillingSettingsPage />} />
+            <Route path="sharing" element={<SharingSettingsPage />} />
+            <Route path="watermarking" element={<WatermarkingSettingsPage />} />
+            <Route path="blocked-users" element={<BlockedUsersSettingsPage />} />
+            <Route path="security" element={<SecuritySettingsPage />} />
+            <Route path="data" element={<DataManagementSettingsPage />} />
+            <Route path="accessibility" element={<AccessibilitySettingsPage />} />
+            <Route path="language" element={<LanguageSettingsPage />} />
+            <Route path="integrations" element={<IntegrationsSettingsPage />} />
+            <Route path="verification" element={<VerificationSettingsPage />} />
+            <Route path="referrals" element={<ReferralsSettingsPage />} />
+          </Route>
         </Routes>
       </Suspense>
     </AnimatePresence>

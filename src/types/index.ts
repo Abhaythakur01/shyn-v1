@@ -14,7 +14,7 @@ export interface ArtForm {
 }
 
 export interface Expert {
-  id: string;
+  id:string;
   name: string;
   specialty: string;
   bio: string;
@@ -41,7 +41,6 @@ export interface BlogPost {
   readTime: string;
 }
 
-// --- UPDATED: Added optional properties ---
 export interface ArtFormContent {
   id: string;
   name: string;
@@ -71,9 +70,9 @@ export interface ArtFormContent {
     title: string;
     description: string;
     buttonText: string;
-    buttonLink?: string; // Optional link for the button
+    buttonLink?: string;
   };
-  customSections?: { // Optional array for custom content
+  customSections?: {
     title: string;
     content: string;
   }[];
@@ -91,4 +90,38 @@ export interface FaqItem {
   id: string;
   question: string;
   answer: string;
+}
+
+// --- NEW TYPES FOR STATISTICS ---
+
+export interface VideoStat {
+  videoId: string;
+  title: string;
+  views: number;
+  likes: number;
+  comments: number;
+  averageWatchTime: string; // e.g., "2:45"
+}
+
+export interface Like {
+  userId: string;
+  userName: string;
+  userAvatar: string;
+  videoId: string;
+}
+
+export interface ImprovementTip {
+  id: string;
+  title: string;
+  description: string;
+  category: 'Thumbnails' | 'Titles' | 'Engagement' | 'Content';
+}
+
+
+// --- NEW TYPE FOR USER PROFILE STATS ---
+export interface UserProfileStats {
+  followers: number;
+  following: number;
+  totalViews: number;
+  totalLikes: number;
 }
