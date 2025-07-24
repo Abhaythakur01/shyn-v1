@@ -3,9 +3,15 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const pool = new Pool({
+// This configuration is now robust for production
+const proConfig = {
   connectionString: process.env.DATABASE_URL,
-});
+  ssl: {
+    rejectUnauthorized: false
+  }
+};
+
+const pool = new Pool(proConfig);
 
 module.exports = {
   query: (text, params) => pool.query(text, params),
