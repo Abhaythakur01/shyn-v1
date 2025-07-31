@@ -7,6 +7,9 @@ const { validateRegistration } = require('../middleware/validation'); // Import 
 router.post('/register', validateRegistration, register);
 router.post('/login', login);
 
-router.get('/profile', protect, getUserProfile);
+// This route now handles both getting and updating the profile
+router.route('/profile')
+    .get(protect, getUserProfile)
+    .put(protect, updateUserProfile);
 
 module.exports = router;

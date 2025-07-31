@@ -1,6 +1,6 @@
 const { query } = require('../config/db');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken'); // Import the library
+const jwt = require('jsonwebtoken');
 
 // Helper function to generate a token
 const generateToken = (id) => {
@@ -11,7 +11,7 @@ const generateToken = (id) => {
 
 /**
  * @desc    Register a new user
- * @route   POST /api/user/register
+ * @route   POST /api/auth/register
  * @access  Public
  */
 const register = async (req, res) => {
@@ -34,10 +34,9 @@ const register = async (req, res) => {
         const newUserResult = await query(newUserQuery, [email, passwordHash, fullName]);
         const newUser = newUserResult.rows[0];
 
-        // --- NEW: Generate a token and send it back ---
         res.status(201).json({
             message: "User registered successfully!",
-            token: generateToken(newUser.id), // Send the token
+            token: generateToken(newUser.id),
             user: newUser
         });
 
@@ -49,19 +48,11 @@ const register = async (req, res) => {
 
 /**
  * @desc    Authenticate a user & get token
- * @route   POST /api/user/login
+ * @route   POST /api/auth/login
  * @access  Public
  */
-
-const getUserProfile = async (req, res) => {
-  // Because our 'protect' middleware ran successfully,
-  // the user's data is attached to the request object (req.user).
-  res.status(200).json(req.user);
-};
-
 const login = async (req, res) => {
     const { email, password } = req.body;
-
 
     try {
         const userResult = await query('SELECT * FROM users WHERE email = $1', [email]);
@@ -79,10 +70,9 @@ const login = async (req, res) => {
         
         const { password_hash, ...userWithoutPassword } = user;
         
-        // --- NEW: Generate a token and send it back ---
         res.status(200).json({
             message: "Login successful!",
-            token: generateToken(user.id), // Send the token
+            token: generateToken(user.id),
             user: userWithoutPassword
         });
 
@@ -92,8 +82,48 @@ const login = async (req, res) => {
     }
 };
 
+/**
+ * @desc    Get user profile
+ * @route   GET /api/auth/profile
+ * @access  Private
+ */
+const getUserProfile = async (req, res) => {
+  res.status(200).json(req.user);
+};
+
+/**
+ * @desc    Update user profile
+ * @route   PUT /api/auth/profile
+ * @access  Private
+ */
+const updateUserProfile = async (req, res) => {
+    // For now, we only update full_name. We can add bio, avatar_url, etc. later.
+    const { fullName } = req.body;
+    const userId = req.user.id;
+
+    try {
+        // Ensure the user exists (though the 'protect' middleware already does this)
+        const userResult = await query('SELECT * FROM users WHERE id = $1', [userId]);
+        if (userResult.rows.length === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+        
+        const updatedUserResult = await query(
+            'UPDATE users SET full_name = $1 WHERE id = $2 RETURNING id, email, full_name, role, is_member',
+            [fullName, userId]
+        );
+
+        res.status(200).json(updatedUserResult.rows[0]);
+
+    } catch (err) {
+        console.error('Profile Update Error:', err);
+        res.status(500).json({ message: 'Server error during profile update.' });
+    }
+};
+
 module.exports = {
     register,
     login,
     getUserProfile,
+    updateUserProfile, // <<< EXPORT THE NEW FUNCTION
 };
