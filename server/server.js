@@ -49,6 +49,11 @@ app.get('/', (req, res) => {
     res.send('🎉 SHYN Backend is running!');
 });
 
+//Health check route
+app.get('/healthz', (req, res) => {
+    res.status(200).send('OK');
+  });
+
 // --- Centralized Error Handler ---
 // This MUST be the last middleware to catch all errors from the routes above
 app.use(errorHandler);

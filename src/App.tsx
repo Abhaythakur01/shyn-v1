@@ -3,6 +3,9 @@ import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
+
+// --- 1. IMPORT THE AUTH PROVIDER ---
+import { AuthProvider } from './hooks/useAuth.tsx';
 // Styles & Utils
 import './styles/scrollbar.css';
 import { isMobileDevice } from './utils/deviceDetection';
@@ -160,9 +163,13 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => (
+  <AuthProvider>
+
+  
   <Router>
     <AppContent />
   </Router>
+  </AuthProvider>
 );
 
 export default App;
